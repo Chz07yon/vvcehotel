@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VVCE HOTEL - Billing System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="form-panel no-print">
+      <h1>VVCE HOTEL</h1>
+      <p class="subtitle">Billing System</p>
+      
+      <form id="billing-form">
+        <div class="form-group">
+          <label for="customer-name">Customer Name</label>
+          <input type="text" id="customer-name" required placeholder="Enter customer name">
+          <span class="error" id="name-error"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone-number">Phone Number</label>
+          <input type="text" id="phone-number" required placeholder="10-digit number" maxlength="10" pattern="\d{10}">
+          <span class="error" id="phone-error"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="num-items">Number of Food Items</label>
+          <div class="input-with-button">
+            <input type="number" id="num-items" required min="1" max="20" placeholder="1-20">
+            <button type="button" id="btn-generate-fields" class="btn-secondary">Generate Fields</button>
+          </div>
+          <span class="error" id="items-error"></span>
+        </div>
+
+        <div id="dynamic-fields-container" class="hidden">
+           <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Food Name</th>
+                  <th>Price (₹)</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody id="items-tbody">
+              </tbody>
+           </table>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="btn-generate-bill" class="btn-primary" disabled>Generate Bill</button>
+          <button type="button" id="btn-reset" class="btn-outline">Reset / New Order</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="bill-panel hidden" id="bill-panel">
+      <div class="receipt-card" id="receipt-card">
+        <div class="receipt-text">############################################################</div>
+        <div class="receipt-title">****** VVCE HOTEL ******</div>
+        <div class="receipt-text">############################################################</div>
+        
+        <table class="items-table-receipt">
+          <thead>
+            <tr>
+              <th>FOOD NAME</th>
+              <th>PRICE</th>
+              <th>QUANTITY</th>
+              <th>TOTAL</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="receipt-text">============================================================</div>
+        <table class="items-table-receipt" id="receipt-items">
+        </table>
+        <div class="receipt-text">=============================================================</div>
+        
+        <div class="flex-between">
+          <span>TOTAL COST:</span>
+          <span id="rcpt-total-cost"></span>
+        </div>
+        <div class="receipt-text">=============================================================</div>
+        <div class="flex-between">
+          <span>20% Discount Applied:</span>
+          <span id="rcpt-discount"></span>
+        </div>
+        <div class="flex-between">
+          <span>GST (5%):</span>
+          <span id="rcpt-gst"></span>
+        </div>
+        <div class="flex-between">
+          <span>CGST (2.5%):</span>
+          <span id="rcpt-cgst"></span>
+        </div>
+        <div class="flex-between">
+          <span>SGST (2.5%):</span>
+          <span id="rcpt-sgst"></span>
+        </div>
+        <div class="flex-between">
+          <span>GAS CHARGE:</span>
+          <span id="rcpt-gas"></span>
+        </div>
+        <div class="receipt-text">#############################################################</div>
+        <div class="flex-between bold-total">
+          <span>TOTAL BILL AMOUNT:</span>
+          <span id="rcpt-final-bill"></span>
+        </div>
+        <div class="receipt-text mb-2">#############################################################</div>
+        
+        <div class="customer-section">
+          CUSTOMER DETAILS:<br>
+          ======================
+        </div>
+        <div>Name: <span id="rcpt-cname"></span></div>
+        <div>Phone No: <span id="rcpt-cphone"></span></div>
+        <div class="receipt-text mt-2">-------------------------------------------------------------</div>
+        
+        <div class="saved-section">
+          <span class="saved-badge">YOU HAVE SAVED: <span id="rcpt-saved"></span></span>
+          <div class="visit-again">PLEASE VISIT AGAIN, <span id="rcpt-cname-footer"></span>!</div>
+        </div>
+        <div class="receipt-text">-------------------------------------------------------------</div>
+      </div>
+      
+      <div class="bill-actions no-print">
+        <button type="button" id="btn-print" class="btn-primary">Print Bill</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

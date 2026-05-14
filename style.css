@@ -1,0 +1,294 @@
+:root {
+  --bg-dark: #0f0505;
+  --bg-panel: rgba(20, 5, 5, 0.75);
+  --accent-gold: #ff3b6b;
+  --accent-gold-hover: #ff1a53;
+  --text-main: #ffffff;
+  --text-muted: #e0e0e0;
+  --receipt-bg: rgba(253, 251, 247, 0.98);
+  --receipt-text: #171717;
+  --error: #ff5555;
+  --border-color: rgba(255, 59, 107, 0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: url('redpatterns.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  align-items: flex-start;
+}
+
+/* Forms */
+.form-panel {
+  flex: 1;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 59, 107, 0.15);
+  border: 1px solid rgba(255, 59, 107, 0.2);
+  border-top: 4px solid var(--accent-gold);
+}
+
+.form-panel h1 {
+  color: var(--accent-gold);
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.form-group { margin-bottom: 1.5rem; }
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2);
+}
+
+.input-with-button {
+  display: flex;
+  gap: 1rem;
+}
+
+.input-with-button input { flex: 1; }
+
+button {
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--accent-gold);
+  color: var(--bg-dark);
+  width: 100%;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-gold-hover);
+  transform: translateY(-2px);
+}
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  background: var(--border-color);
+  color: white;
+  white-space: nowrap;
+}
+.btn-secondary:hover { background: #444444; }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 100%;
+  margin-top: 1rem;
+}
+.btn-outline:hover {
+  background: rgba(255, 59, 107, 0.1);
+  color: white;
+}
+
+.hidden { display: none !important; }
+.error {
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  display: block;
+  min-height: 1rem;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+.items-table th {
+  text-align: left;
+  padding-bottom: 0.75rem;
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+.items-table td { padding-bottom: 0.75rem; padding-right: 0.5rem; }
+.items-table td:last-child { padding-right: 0; }
+
+/* Bill Panel */
+.bill-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.receipt-card {
+  background: var(--receipt-bg);
+  color: var(--receipt-text);
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  padding: 2rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  border-top: 8px dashed #e0dccc;
+  border-bottom: 8px dashed #e0dccc;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.receipt-text {
+  white-space: pre;
+  overflow: hidden;
+  color: #555;
+}
+
+.receipt-title {
+  text-align: center;
+  margin: 8px 0;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.items-table-receipt {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: inherit;
+  font-size: inherit;
+}
+.items-table-receipt th { font-weight: normal; }
+.items-table-receipt th, .items-table-receipt td { padding: 4px 0; }
+.items-table-receipt th:nth-child(1), .items-table-receipt td:nth-child(1) { text-align: left; }
+.items-table-receipt th:nth-child(2), .items-table-receipt td:nth-child(2) { text-align: right; }
+.items-table-receipt th:nth-child(3), .items-table-receipt td:nth-child(3) { text-align: right; }
+.items-table-receipt th:nth-child(4), .items-table-receipt td:nth-child(4) { text-align: right; }
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.bold-total {
+  font-weight: bold;
+  font-size: 1.15em;
+  margin: 8px 0;
+}
+
+.mb-2 { margin-bottom: 8px; }
+.mt-2 { margin-top: 8px; }
+
+.customer-section {
+  text-align: center;
+  margin-bottom: 8px;
+  white-space: pre;
+  line-height: 1.2;
+}
+
+.saved-section {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.saved-badge {
+  background: #e6f4ea;
+  color: #1e8e3e;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  border-radius: 4px;
+  border: 1px dashed #1e8e3e;
+  display: inline-block;
+  font-size: 0.95rem;
+}
+
+.visit-again {
+  margin-top: 12px;
+}
+
+.bill-actions {
+  width: 100%;
+  max-width: 480px;
+}
+
+@media (max-width: 900px) {
+  .container { flex-direction: column; }
+  .form-panel, .bill-panel { width: 100%; }
+}
+
+@media print {
+  body {
+    background: white;
+    padding: 0;
+    margin: 0;
+    align-items: flex-start;
+  }
+  .container { margin: 0; padding: 0; width: 100%; max-width: 100%; }
+  .no-print { display: none !important; }
+  .bill-panel {
+    width: 100%;
+    align-items: flex-start;
+    padding: 0;
+  }
+  .receipt-card {
+    box-shadow: none;
+    max-width: 100%;
+    border: none;
+    padding: 1rem;
+    margin: 0;
+  }
+}
