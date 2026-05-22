@@ -1,136 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VVCE HOTEL - Billing System</title>
+  <title>VVCE HOTEL - Premium Billing Terminal</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet">
 </head>
+
 <body>
-  <div class="container">
-    <div class="form-panel no-print">
-      <h1>VVCE HOTEL</h1>
-      <p class="subtitle">Billing System</p>
-      
-      <form id="billing-form">
-        <div class="form-group">
-          <label for="customer-name">Customer Name</label>
-          <input type="text" id="customer-name" required placeholder="Enter customer name">
-          <span class="error" id="name-error"></span>
+  <div class="dashboard-shell">
+    <!-- Header Section -->
+    <header class="dashboard-header no-print">
+      <div class="header-brand">
+        <div class="brand-crest">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+            <path
+              d="M12 2L2 22h20L12 2zm0 3.99L18.8 18H5.2L12 5.99zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 0.67 1.5 1.5-0.67 1.5-1.5 1.5z" />
+          </svg>
         </div>
-        
-        <div class="form-group">
-          <label for="phone-number">Phone Number</label>
-          <input type="text" id="phone-number" required placeholder="10-digit number" maxlength="10" pattern="\d{10}">
-          <span class="error" id="phone-error"></span>
+        <div class="brand-text">
+          <h1>VVCE HOTEL</h1>
+          <span class="brand-subtitle">Premium Billing Terminal</span>
         </div>
-        
-        <div class="form-group">
-          <label for="num-items">Number of Food Items</label>
-          <div class="input-with-button">
-            <input type="number" id="num-items" required min="1" max="20" placeholder="1-20">
-            <button type="button" id="btn-generate-fields" class="btn-secondary">Generate Fields</button>
+      </div>
+      <div class="header-meta">
+        <div class="time-widget">
+          <span class="clock-time" id="clock-time">09:30:00 AM</span>
+          <span class="clock-date" id="clock-date">Friday, May 22, 2026</span>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-icon" id="btn-open-history" title="Invoice History">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+            </svg>
+          </button>
+          <button type="button" class="btn-icon" id="btn-open-settings" title="Settings">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Collapsible Analytics Dashboard Banner -->
+    <section class="analytics-banner no-print" id="analytics-banner">
+      <div class="analytics-header" id="analytics-toggle" title="Toggle Dashboard Analytics">
+        <div class="toggle-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path
+              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+          </svg>
+          <span>Terminal Analytics & Metrics (Today)</span>
+        </div>
+        <button type="button" class="btn-toggle-arrow">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" id="analytics-arrow-svg">
+            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+          </svg>
+        </button>
+      </div>
+      <div class="analytics-body" id="analytics-body">
+        <div class="analytics-card">
+          <div class="card-icon revenue">₹</div>
+          <div class="card-info">
+            <span class="card-label">Total Revenue</span>
+            <span class="card-value" id="stat-revenue">₹0.00</span>
           </div>
-          <span class="error" id="items-error"></span>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon orders">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path
+                d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+            </svg>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Orders Completed</span>
+            <span class="card-value" id="stat-orders">0</span>
+          </div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon popular">★</div>
+          <div class="card-info">
+            <span class="card-label">Top Selling Item</span>
+            <span class="card-value" id="stat-top-item">None</span>
+          </div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon discounts">🏷️</div>
+          <div class="card-info">
+            <span class="card-label">Total Savings Given</span>
+            <span class="card-value" id="stat-discounts">₹0.00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <div class="container">
+
+      <!-- Billing Console Form Panel -->
+      <div class="form-panel no-print">
+        <div class="panel-header">
+          <h2 class="panel-title">Billing Console</h2>
+          <p class="panel-subtitle">Create and manage guest orders</p>
         </div>
 
-        <div id="dynamic-fields-container" class="hidden">
-           <table class="items-table">
+        <form id="billing-form" novalidate>
+
+          <!-- Customer & Order Information Section -->
+          <div class="section-card">
+            <h3 class="section-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+              Customer & Order Details
+            </h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customer-name">Customer Name</label>
+                <div class="input-wrapper">
+                  <input type="text" id="customer-name" required placeholder="Jane Doe">
+                  <span class="input-focus-ring"></span>
+                </div>
+                <span class="error" id="name-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="phone-number">Phone Number</label>
+                <div class="input-wrapper">
+                  <input type="text" id="phone-number" required placeholder="10-digit mobile number" maxlength="10"
+                    pattern="\d{10}">
+                  <span class="input-focus-ring"></span>
+                </div>
+                <span class="error" id="phone-error"></span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="order-type">Order Type</label>
+                <div class="input-wrapper">
+                  <select id="order-type">
+                    <option value="Dine-In">Dine-In</option>
+                    <option value="Takeaway">Takeaway</option>
+                    <option value="Delivery">Delivery</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="table-group">
+                <label for="table-num">Table Number</label>
+                <div class="input-wrapper">
+                  <select id="table-num">
+                    <option value="1">Table 1</option>
+                    <option value="2">Table 2</option>
+                    <option value="3">Table 3</option>
+                    <option value="4">Table 4</option>
+                    <option value="5">Table 5</option>
+                    <option value="6">Table 6</option>
+                    <option value="7">Table 7</option>
+                    <option value="8">Table 8</option>
+                    <option value="9">Table 9</option>
+                    <option value="10">Table 10</option>
+                    <option value="11">Table 11</option>
+                    <option value="12">Table 12</option>
+                    <option value="13">Table 13</option>
+                    <option value="14">Table 14</option>
+                    <option value="15">Table 15</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="delivery-group" style="display: none;">
+                <label for="delivery-app">Delivery Platform</label>
+                <div class="input-wrapper">
+                  <select id="delivery-app">
+                    <option value="Zomato">Zomato</option>
+                    <option value="Swiggy">Swiggy</option>
+                    <option value="Zepto">Zepto</option>
+                    <option value="bigbasket">bigbasket</option>
+                    <option value="Dominoz">Dominoz</option>
+                    <option value="Pizza Hut">Pizza Hut</option>
+                    <option value="Eat sure">Eat sure</option>
+                    <option value="Blinkit">Blinkit</option>
+                    <option value="Switch">Switch</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="payment-method">Payment Method</label>
+                <div class="input-wrapper">
+                  <select id="payment-method">
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card</option>
+                    <option value="UPI">UPI (QR Code)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick-Add Popular Menu Section (Categorized & Searchable) -->
+          <div class="section-card">
+            <div class="section-header vertical-tablet">
+              <h3 class="section-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path
+                    d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
+                </svg>
+                Menu Inventory
+              </h3>
+              <div class="menu-search-wrapper">
+                <input type="text" id="menu-search" placeholder="🔍 Search food items...">
+              </div>
+            </div>
+
+            <div class="category-tabs">
+              <button type="button" class="category-tab active" data-category="all">All</button>
+              <button type="button" class="category-tab" data-category="breakfast">Breakfast</button>
+              <button type="button" class="category-tab" data-category="starters">Starters</button>
+              <button type="button" class="category-tab" data-category="mains">Mains</button>
+              <button type="button" class="category-tab" data-category="beverages">Beverages</button>
+            </div>
+
+            <div class="quick-menu-container" id="quick-menu-container">
+              <!-- Dynamically populated from JS array -->
+            </div>
+          </div>
+
+          <!-- Items Details Builder Section -->
+          <div class="section-card">
+            <div class="section-header">
+              <h3 class="section-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path
+                    d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                </svg>
+                Order Items
+              </h3>
+              <div class="generator-controls">
+                <label for="num-items">Quick-add rows:</label>
+                <div class="input-with-button">
+                  <input type="number" id="num-items" min="1" max="20" placeholder="Qty">
+                  <button type="button" id="btn-generate-fields" class="btn-secondary">Add Rows</button>
+                </div>
+              </div>
+            </div>
+            <span class="error" id="items-error"></span>
+
+            <!-- Dynamic Table Wrapper -->
+            <div id="dynamic-fields-container">
+              <table class="items-table">
+                <thead>
+                  <tr>
+                    <th>Food Name</th>
+                    <th>Price (₹)</th>
+                    <th>Qty</th>
+                    <th>Total (₹)</th>
+                    <th style="width: 48px; text-align: center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="items-tbody">
+                  <!-- JS builds items here dynamically -->
+                </tbody>
+              </table>
+              <div class="table-actions">
+                <button type="button" id="btn-add-item-row" class="btn-text">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  </svg>
+                  Add Custom Item Line
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="submit" id="btn-generate-bill" class="btn-primary" disabled>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+              </svg>
+              Compile & Generate Bill
+            </button>
+            <button type="button" id="btn-reset" class="btn-outline">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path
+                  d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+              </svg>
+              Clear Order
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Live Receipt Panel -->
+      <div class="bill-panel hidden" id="bill-panel">
+        <div class="receipt-card-wrapper">
+          <div class="receipt-card" id="receipt-card">
+            <!-- Thermal Receipt Header -->
+            <div class="receipt-header">
+              <div class="receipt-crest">
+                <svg viewBox="0 0 24 24" width="42" height="42" fill="currentColor">
+                  <path
+                    d="M12 2L2 22h20L12 2zm0 3.99L18.8 18H5.2L12 5.99zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+              </div>
+              <div class="receipt-title">VVCE HOTEL</div>
+              <div class="receipt-tagline">Vidyavardhaka College of Engineering Campus</div>
+              <div class="receipt-address">Gokulam 3rd Stage, Mysuru, Karnataka 570002</div>
+              <div class="receipt-contact">Ph: 0821-4276200 | info@vvce.ac.in</div>
+            </div>
+
+            <div class="divider-dotted"></div>
+
+            <!-- Receipt Info -->
+            <div class="receipt-meta-grid">
+              <div><strong>Terminal:</strong> POS-01</div>
+              <div style="text-align: right;"><strong>Invoice:</strong> <span id="rcpt-invoice-num">#VVCE-1001</span>
+              </div>
+              <div><strong>Date:</strong> <span id="rcpt-date-text">22/05/2026</span></div>
+              <div style="text-align: right;"><strong>Time:</strong> <span id="rcpt-time-text">09:30 AM</span></div>
+              <div><strong>Order Type:</strong> <span id="rcpt-order-type">Dine-In</span></div>
+              <div style="text-align: right;" id="rcpt-table-row"><strong>Table:</strong> <span
+                  id="rcpt-table-num">Table 3</span></div>
+              <div style="text-align: right; display: none;" id="rcpt-delivery-row"><strong>Platform:</strong> <span
+                  id="rcpt-delivery-app">Zomato</span></div>
+            </div>
+
+            <div class="divider-dotted"></div>
+
+            <!-- Receipt Items Table -->
+            <table class="receipt-items-table">
               <thead>
                 <tr>
-                  <th>Food Name</th>
-                  <th>Price (₹)</th>
-                  <th>Quantity</th>
+                  <th style="width: 50%;">ITEM NAME</th>
+                  <th style="width: 15%; text-align: right;">PRICE</th>
+                  <th style="width: 15%; text-align: right;">QTY</th>
+                  <th style="width: 20%; text-align: right;">TOTAL</th>
                 </tr>
               </thead>
-              <tbody id="items-tbody">
+              <tbody id="receipt-items">
+                <!-- Items populated by JS -->
               </tbody>
-           </table>
+            </table>
+
+            <div class="divider-double"></div>
+
+            <!-- Receipt Calculations -->
+            <div class="receipt-summary-grid">
+              <div class="summary-row">
+                <span>SUBTOTAL:</span>
+                <span id="rcpt-total-cost">₹0.00</span>
+              </div>
+              <div class="summary-row font-italic">
+                <span><span id="rcpt-discount-lbl">20</span>% Discount Base:</span>
+                <span id="rcpt-discount">₹0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>GST (<span id="rcpt-gst-lbl">5</span>%):</span>
+                <span id="rcpt-gst">₹0.00</span>
+              </div>
+              <div class="summary-row sub-tax">
+                <span>&nbsp;&nbsp;CGST (<span id="rcpt-cgst-lbl">2.5</span>%):</span>
+                <span id="rcpt-cgst">₹0.00</span>
+              </div>
+              <div class="summary-row sub-tax">
+                <span>&nbsp;&nbsp;SGST (<span id="rcpt-sgst-lbl">2.5</span>%):</span>
+                <span id="rcpt-sgst">₹0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>GAS CHARGE (<span id="rcpt-gas-lbl">5</span>%):</span>
+                <span id="rcpt-gas">₹0.00</span>
+              </div>
+
+              <div class="divider-single"></div>
+
+              <div class="summary-row bold-total">
+                <span>GRAND TOTAL:</span>
+                <span id="rcpt-final-bill">₹0.00</span>
+              </div>
+
+              <div class="divider-single"></div>
+            </div>
+
+            <!-- Customer Details Block -->
+            <div class="receipt-customer-details">
+              <div class="customer-details-title">CUSTOMER DETAILS</div>
+              <div class="customer-details-row"><span>Name:</span> <span id="rcpt-cname" class="bold-value">Jane
+                  Doe</span></div>
+              <div class="customer-details-row"><span>Phone:</span> <span id="rcpt-cphone"
+                  class="bold-value">9876543210</span></div>
+              <div class="customer-details-row"><span>Paid Via:</span> <span id="rcpt-pay-method"
+                  class="bold-value">Cash</span></div>
+            </div>
+
+            <div class="divider-dotted"></div>
+
+            <!-- Savings Badge & Thank you -->
+            <div class="receipt-footer">
+              <div class="savings-container">
+                <span class="savings-label">NET SAVINGS TODAY</span>
+                <span class="savings-amount" id="rcpt-saved">₹0.00</span>
+              </div>
+
+              <!-- UPI QR Code Block -->
+              <div class="receipt-qr-wrapper hidden" id="receipt-qr-wrapper">
+                <div class="receipt-qr-title">SCAN TO PAY (UPI)</div>
+                <img class="receipt-qr-img" id="receipt-qr-img" src="" alt="Payment QR Code">
+                <div class="receipt-qr-upi" id="receipt-qr-upi-id">vvcehotel@upi</div>
+                <div class="divider-dotted"></div>
+              </div>
+
+              <div class="visit-again-msg">
+                THANK YOU FOR YOUR VISIT, <span id="rcpt-cname-footer">JANE DOE</span>!
+              </div>
+              <div class="barcode-wrapper">
+                <div class="barcode-lines"></div>
+                <div class="barcode-value" id="rcpt-barcode-val">VVCE-POS-51AB9712</div>
+              </div>
+              <div class="receipt-version">Software: Antigravity v3.5-POS</div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-actions">
-          <button type="submit" id="btn-generate-bill" class="btn-primary" disabled>Generate Bill</button>
-          <button type="button" id="btn-reset" class="btn-outline">Reset / New Order</button>
+        <!-- Print Trigger -->
+        <div class="bill-actions no-print">
+          <button type="button" id="btn-print" class="btn-primary btn-large">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+            </svg>
+            Print Customer Receipt
+          </button>
         </div>
-      </form>
-    </div>
-
-    <div class="bill-panel hidden" id="bill-panel">
-      <div class="receipt-card" id="receipt-card">
-        <div class="receipt-text">############################################################</div>
-        <div class="receipt-title">****** VVCE HOTEL ******</div>
-        <div class="receipt-text">############################################################</div>
-        
-        <table class="items-table-receipt">
-          <thead>
-            <tr>
-              <th>FOOD NAME</th>
-              <th>PRICE</th>
-              <th>QUANTITY</th>
-              <th>TOTAL</th>
-            </tr>
-          </thead>
-        </table>
-        <div class="receipt-text">============================================================</div>
-        <table class="items-table-receipt" id="receipt-items">
-        </table>
-        <div class="receipt-text">=============================================================</div>
-        
-        <div class="flex-between">
-          <span>TOTAL COST:</span>
-          <span id="rcpt-total-cost"></span>
-        </div>
-        <div class="receipt-text">=============================================================</div>
-        <div class="flex-between">
-          <span>20% Discount Applied:</span>
-          <span id="rcpt-discount"></span>
-        </div>
-        <div class="flex-between">
-          <span>GST (5%):</span>
-          <span id="rcpt-gst"></span>
-        </div>
-        <div class="flex-between">
-          <span>CGST (2.5%):</span>
-          <span id="rcpt-cgst"></span>
-        </div>
-        <div class="flex-between">
-          <span>SGST (2.5%):</span>
-          <span id="rcpt-sgst"></span>
-        </div>
-        <div class="flex-between">
-          <span>GAS CHARGE:</span>
-          <span id="rcpt-gas"></span>
-        </div>
-        <div class="receipt-text">#############################################################</div>
-        <div class="flex-between bold-total">
-          <span>TOTAL BILL AMOUNT:</span>
-          <span id="rcpt-final-bill"></span>
-        </div>
-        <div class="receipt-text mb-2">#############################################################</div>
-        
-        <div class="customer-section">
-          CUSTOMER DETAILS:<br>
-          ======================
-        </div>
-        <div>Name: <span id="rcpt-cname"></span></div>
-        <div>Phone No: <span id="rcpt-cphone"></span></div>
-        <div class="receipt-text mt-2">-------------------------------------------------------------</div>
-        
-        <div class="saved-section">
-          <span class="saved-badge">YOU HAVE SAVED: <span id="rcpt-saved"></span></span>
-          <div class="visit-again">PLEASE VISIT AGAIN, <span id="rcpt-cname-footer"></span>!</div>
-        </div>
-        <div class="receipt-text">-------------------------------------------------------------</div>
       </div>
-      
-      <div class="bill-actions no-print">
-        <button type="button" id="btn-print" class="btn-primary">Print Bill</button>
+
+    </div>
+  </div>
+
+  <!-- Settings Modal (Admin Console) -->
+  <div class="modal-overlay hidden" id="settings-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Terminal Settings</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="set-discount">Default Discount (%)</label>
+          <div class="input-wrapper">
+            <input type="number" id="set-discount" min="0" max="100" placeholder="20">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="set-gst">GST Rate (%)</label>
+          <div class="input-wrapper">
+            <input type="number" id="set-gst" min="0" max="100" placeholder="5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="set-gas">Gas Charge Rate (%)</label>
+          <div class="input-wrapper">
+            <input type="number" id="set-gas" min="0" max="100" placeholder="5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="set-upi">Hotel UPI Address</label>
+          <div class="input-wrapper">
+            <input type="text" id="set-upi" placeholder="vvcehotel@upi">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" id="btn-cancel-settings">Cancel</button>
+        <button type="button" class="btn-primary" id="btn-save-settings">Save Config</button>
       </div>
     </div>
   </div>
+
+  <!-- History Drawer -->
+  <div class="drawer-overlay hidden" id="history-drawer-overlay"></div>
+  <div class="history-drawer no-print" id="history-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title">🗄️ Transaction Invoices</h3>
+      <button type="button" class="btn-close-drawer" id="btn-close-history">&times;</button>
+    </div>
+    <div class="drawer-search-wrapper">
+      <div class="input-wrapper">
+        <input type="text" id="history-search" placeholder="Search by name, phone or bill #...">
+      </div>
+    </div>
+    <div class="drawer-body" id="history-list">
+      <!-- Generated lists of invoices dynamically -->
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
+
 </html>

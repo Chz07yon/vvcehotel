@@ -1,188 +1,857 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- DATABASE & STATE ---
+  const MENU_ITEMS = [
+    // Breakfast
+    { name: "Masala Dosa", price: 60.00, category: "breakfast", icon: "🥞" },
+    { name: "Idli (2 pcs)", price: 30.00, category: "breakfast", icon: "⚪" },
+    { name: "Vada (1 pc)", price: 20.00, category: "breakfast", icon: "🍩" },
+    { name: "Poori (2 pcs)", price: 45.00, category: "breakfast", icon: "🫓" },
+    // Starters
+    { name: "Paneer Tikka", price: 180.00, category: "starters", icon: "🍢" },
+    { name: "Gobi Manchurian", price: 120.00, category: "starters", icon: "🥦" },
+    { name: "Veg Spring Roll", price: 100.00, category: "starters", icon: "🌯" },
+    { name: "French Fries", price: 80.00, category: "starters", icon: "🍟" },
+    // Mains
+    { name: "Veg Biryani", price: 150.00, category: "mains", icon: "🍛" },
+    { name: "Roti (1 pc)", price: 25.00, category: "mains", icon: "🫓" },
+    { name: "Paneer Butter Masala", price: 180.00, category: "mains", icon: "🥣" },
+    { name: "Dal Tadka", price: 110.00, category: "mains", icon: "🍲" },
+    { name: "Veg Fried Rice", price: 130.00, category: "mains", icon: "🍚" },
+    // Beverages
+    { name: "Coffee", price: 20.00, category: "beverages", icon: "☕" },
+    { name: "Tea", price: 15.00, category: "beverages", icon: "🍵" },
+    { name: "Fruit Juice", price: 50.00, category: "beverages", icon: "🥤" },
+    { name: "Cold Milkshake", price: 70.00, category: "beverages", icon: "🥛" }
+  ];
+
+  // Default Terminal Configurations
+  let config = {
+    discount: 20, // 20%
+    gst: 5,       // 5%
+    gas: 5,       // 5%
+    upi: "vvcehotel@upi"
+  };
+
+  let transactions = [];
+  let currentInvoiceNum = ""; // Holds compiled invoice number
+
+  // --- ELEMENTS SELECTION ---
   const form = document.getElementById('billing-form');
   const btnGenerateFields = document.getElementById('btn-generate-fields');
-  const dynamicFieldsContainer = document.getElementById('dynamic-fields-container');
   const itemsTbody = document.getElementById('items-tbody');
+  const btnAddItemRow = document.getElementById('btn-add-item-row');
   const btnGenerateBill = document.getElementById('btn-generate-bill');
   const btnReset = document.getElementById('btn-reset');
   const billPanel = document.getElementById('bill-panel');
   const btnPrint = document.getElementById('btn-print');
 
-  // Input Validation elements
+  // Form Inputs
   const customerName = document.getElementById('customer-name');
   const phoneNumber = document.getElementById('phone-number');
-  const numItems = document.getElementById('num-items');
-  
+  const numItemsInput = document.getElementById('num-items');
+  const orderType = document.getElementById('order-type');
+  const tableGroup = document.getElementById('table-group');
+  const tableNum = document.getElementById('table-num');
+  const deliveryGroup = document.getElementById('delivery-group');
+  const deliveryApp = document.getElementById('delivery-app');
+  const paymentMethod = document.getElementById('payment-method');
+
+  // Error spans
   const nameError = document.getElementById('name-error');
   const phoneError = document.getElementById('phone-error');
   const itemsError = document.getElementById('items-error');
 
+  // Header and Clock widgets
+  const clockTime = document.getElementById('clock-time');
+  const clockDate = document.getElementById('clock-date');
+
+  // Analytics Widgets
+  const analyticsBanner = document.getElementById('analytics-banner');
+  const analyticsToggle = document.getElementById('analytics-toggle');
+  const statRevenue = document.getElementById('stat-revenue');
+  const statOrders = document.getElementById('stat-orders');
+  const statTopItem = document.getElementById('stat-top-item');
+  const statDiscounts = document.getElementById('stat-discounts');
+
+  // Quick Menu & Search
+  const quickMenuContainer = document.getElementById('quick-menu-container');
+  const menuSearch = document.getElementById('menu-search');
+  const categoryTabs = document.querySelectorAll('.category-tab');
+
+  // Settings Modal Elements
+  const settingsModal = document.getElementById('settings-modal');
+  const btnOpenSettings = document.getElementById('btn-open-settings');
+  const btnCloseSettings = document.getElementById('btn-close-settings');
+  const btnCancelSettings = document.getElementById('btn-cancel-settings');
+  const btnSaveSettings = document.getElementById('btn-save-settings');
+  const setDiscountInput = document.getElementById('set-discount');
+  const setGstInput = document.getElementById('set-gst');
+  const setGasInput = document.getElementById('set-gas');
+  const setUpiInput = document.getElementById('set-upi');
+
+  // History Drawer Elements
+  const historyDrawer = document.getElementById('history-drawer');
+  const historyDrawerOverlay = document.getElementById('history-drawer-overlay');
+  const btnOpenHistory = document.getElementById('btn-open-history');
+  const btnCloseHistory = document.getElementById('btn-close-history');
+  const historySearch = document.getElementById('history-search');
+  const historyList = document.getElementById('history-list');
+
+  // Receipt Preview Elements
+  const rcptInvoiceNum = document.getElementById('rcpt-invoice-num');
+  const rcptDateText = document.getElementById('rcpt-date-text');
+  const rcptTimeText = document.getElementById('rcpt-time-text');
+  const rcptOrderType = document.getElementById('rcpt-order-type');
+  const rcptTableRow = document.getElementById('rcpt-table-row');
+  const rcptTableNumSpan = document.getElementById('rcpt-table-num');
+  const rcptDeliveryRow = document.getElementById('rcpt-delivery-row');
+  const rcptDeliveryApp = document.getElementById('rcpt-delivery-app');
+  const receiptItems = document.getElementById('receipt-items');
+  const rcptDiscountLbl = document.getElementById('rcpt-discount-lbl');
+  const rcptGstLbl = document.getElementById('rcpt-gst-lbl');
+  const rcptCgstLbl = document.getElementById('rcpt-cgst-lbl');
+  const rcptSgstLbl = document.getElementById('rcpt-sgst-lbl');
+  const rcptGasLbl = document.getElementById('rcpt-gas-lbl');
+  const rcptPayMethod = document.getElementById('rcpt-pay-method');
+  const rcptQrWrapper = document.getElementById('receipt-qr-wrapper');
+  const rcptQrImg = document.getElementById('receipt-qr-img');
+  const rcptQrUpiId = document.getElementById('receipt-qr-upi-id');
+  const rcptBarcodeVal = document.getElementById('rcpt-barcode-val');
+
+  // --- INITIAL SETUP ---
   const formatCurrency = (amount) => `₹${amount.toFixed(2)}`;
 
-  // Real-time phone number constraint
-  phoneNumber.addEventListener('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+  // Load Saved Configurations
+  const loadConfigurations = () => {
+    const savedConfig = localStorage.getItem('vvce_config');
+    if (savedConfig) {
+      try {
+        config = JSON.parse(savedConfig);
+      } catch (e) {
+        console.error("Error parsing config from localStorage", e);
+      }
+    }
+    // Populate settings inputs
+    setDiscountInput.value = config.discount;
+    setGstInput.value = config.gst;
+    setGasInput.value = config.gas;
+    setUpiInput.value = config.upi;
+
+    // Apply configuration labels to receipt
+    rcptDiscountLbl.textContent = config.discount;
+    rcptGstLbl.textContent = config.gst.toFixed(1);
+    rcptCgstLbl.textContent = (config.gst / 2).toFixed(2);
+    rcptSgstLbl.textContent = (config.gst / 2).toFixed(2);
+    rcptGasLbl.textContent = config.gas.toFixed(1);
+    rcptQrUpiId.textContent = config.upi;
+  };
+
+  // Load Past Transactions
+  const loadTransactions = () => {
+    const savedTransactions = localStorage.getItem('vvce_transactions');
+    if (savedTransactions) {
+      try {
+        transactions = JSON.parse(savedTransactions);
+      } catch (e) {
+        console.error("Error parsing transactions", e);
+      }
+    }
+  };
+
+  // Save Transaction to local db
+  const saveTransaction = (invoice) => {
+    transactions.push(invoice);
+    localStorage.setItem('vvce_transactions', JSON.stringify(transactions));
+    updateAnalytics();
+    renderHistory();
+  };
+
+  // Update Sales Analytics
+  const updateAnalytics = () => {
+    let totalRevenue = 0;
+    let totalDiscounts = 0;
+    const itemCounts = {};
+
+    transactions.forEach(t => {
+      totalRevenue += t.finalBill;
+      totalDiscounts += t.saved;
+      t.items.forEach(item => {
+        itemCounts[item.name] = (itemCounts[item.name] || 0) + item.qty;
+      });
+    });
+
+    // Find top item
+    let topItem = "None";
+    let maxQty = 0;
+    for (const [name, qty] of Object.entries(itemCounts)) {
+      if (qty > maxQty) {
+        maxQty = qty;
+        topItem = name;
+      }
+    }
+
+    statRevenue.textContent = formatCurrency(totalRevenue);
+    statOrders.textContent = transactions.length;
+    statTopItem.textContent = topItem + (maxQty > 0 ? ` (${maxQty})` : '');
+    statDiscounts.textContent = formatCurrency(totalDiscounts);
+  };
+
+  // --- DIGITAL CLOCK ---
+  const updateClock = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    clockTime.textContent = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    clockDate.textContent = now.toLocaleDateString('en-US', options);
+  };
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // --- COLLAPSIBLE ANALYTICS ---
+  analyticsToggle.addEventListener('click', () => {
+    analyticsBanner.classList.toggle('collapsed');
   });
 
+  // --- ORDER TYPES & TABLES CONTROLS ---
+  orderType.addEventListener('change', () => {
+    if (orderType.value === "Dine-In") {
+      tableGroup.style.display = "";
+      rcptTableRow.style.display = "";
+      deliveryGroup.style.display = "none";
+      rcptDeliveryRow.style.display = "none";
+    } else if (orderType.value === "Delivery") {
+      tableGroup.style.display = "none";
+      rcptTableRow.style.display = "none";
+      deliveryGroup.style.display = "";
+      rcptDeliveryRow.style.display = "";
+    } else {
+      tableGroup.style.display = "none";
+      rcptTableRow.style.display = "none";
+      deliveryGroup.style.display = "none";
+      rcptDeliveryRow.style.display = "none";
+    }
+  });
+
+  // --- MENU RENDER & SEARCH ---
+  const renderMenu = (filterCat = "all", search = "") => {
+    quickMenuContainer.innerHTML = '';
+    const query = search.trim().toLowerCase();
+
+    const filtered = MENU_ITEMS.filter(item => {
+      const matchCat = filterCat === "all" || item.category === filterCat;
+      const matchSearch = item.name.toLowerCase().includes(query);
+      return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      quickMenuContainer.innerHTML = `<span style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;">No matching items found</span>`;
+      return;
+    }
+
+    filtered.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'menu-item-btn';
+      btn.setAttribute('data-name', item.name);
+      btn.setAttribute('data-price', item.price);
+      
+      btn.innerHTML = `
+        <span class="item-icon">${item.icon}</span>
+        <span class="item-info">
+          <span class="name" title="${item.name}">${item.name}</span>
+          <span class="price">${formatCurrency(item.price)}</span>
+        </span>
+      `;
+
+      btn.addEventListener('click', () => {
+        addMenuItemToTable(item.name, item.price);
+        btn.style.transform = 'scale(0.95)';
+        setTimeout(() => { btn.style.transform = ''; }, 100);
+      });
+
+      quickMenuContainer.appendChild(btn);
+    });
+  };
+
+  categoryTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      categoryTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderMenu(tab.getAttribute('data-category'), menuSearch.value);
+    });
+  });
+
+  menuSearch.addEventListener('input', () => {
+    const activeTab = document.querySelector('.category-tab.active');
+    renderMenu(activeTab.getAttribute('data-category'), menuSearch.value);
+  });
+
+  // --- DYNAMIC ITEMS TABLE WORKFLOW ---
+  const addMenuItemToTable = (name, price) => {
+    const rows = itemsTbody.querySelectorAll('.item-row');
+    let found = false;
+
+    for (let i = 0; i < rows.length; i++) {
+      const nameInput = rows[i].querySelector('.item-name');
+      const priceInput = rows[i].querySelector('.item-price');
+      const qtyInput = rows[i].querySelector('.item-qty');
+
+      if (nameInput.value.trim().toLowerCase() === name.toLowerCase()) {
+        const qty = parseInt(qtyInput.value) || 0;
+        qtyInput.value = qty + 1;
+        qtyInput.dispatchEvent(new Event('input'));
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      // Find empty row
+      let emptyRow = null;
+      for (let i = 0; i < rows.length; i++) {
+        const nameInput = rows[i].querySelector('.item-name');
+        const priceInput = rows[i].querySelector('.item-price');
+        if (!nameInput.value.trim() && !priceInput.value) {
+          emptyRow = rows[i];
+          break;
+        }
+      }
+
+      if (emptyRow) {
+        emptyRow.querySelector('.item-name').value = name;
+        emptyRow.querySelector('.item-price').value = price;
+        emptyRow.querySelector('.item-qty').value = 1;
+        emptyRow.querySelector('.item-name').dispatchEvent(new Event('input'));
+      } else {
+        createItemRow(name, price, 1);
+      }
+    }
+  };
+
+  const createItemRow = (name = "", price = "", qty = 1) => {
+    const tr = document.createElement('tr');
+    tr.className = 'item-row';
+    
+    tr.innerHTML = `
+      <td>
+        <input type="text" class="item-name" placeholder="Enter food name" value="${name}" required>
+      </td>
+      <td>
+        <input type="number" class="item-price" placeholder="0.00" min="0" step="0.01" value="${price}" required>
+      </td>
+      <td>
+        <input type="number" class="item-qty" placeholder="1" min="1" value="${qty}" required>
+      </td>
+      <td class="row-total-cell">
+        ₹0.00
+      </td>
+      <td style="text-align: center;">
+        <button type="button" class="btn-delete-row" title="Remove Item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </td>
+    `;
+
+    const nameInput = tr.querySelector('.item-name');
+    const priceInput = tr.querySelector('.item-price');
+    const qtyInput = tr.querySelector('.item-qty');
+    const deleteBtn = tr.querySelector('.btn-delete-row');
+
+    const updateRowTotal = () => {
+      const priceVal = parseFloat(priceInput.value) || 0;
+      const qtyVal = parseInt(qtyInput.value) || 0;
+      const total = priceVal * qtyVal;
+      tr.querySelector('.row-total-cell').textContent = formatCurrency(total);
+      
+      if (nameInput.value.trim()) nameInput.style.borderColor = "";
+      if (priceInput.value && priceVal >= 0) priceInput.style.borderColor = "";
+      if (qtyInput.value && qtyVal >= 1) qtyInput.style.borderColor = "";
+      
+      recalculateBill();
+      checkFormValidity();
+    };
+
+    nameInput.addEventListener('input', updateRowTotal);
+    priceInput.addEventListener('input', updateRowTotal);
+    qtyInput.addEventListener('input', updateRowTotal);
+
+    deleteBtn.addEventListener('click', () => {
+      tr.remove();
+      if (itemsTbody.children.length === 0) {
+        createItemRow();
+      }
+      recalculateBill();
+      checkFormValidity();
+    });
+
+    itemsTbody.appendChild(tr);
+    updateRowTotal();
+  };
+
+  // Add custom lines
+  btnAddItemRow.addEventListener('click', () => {
+    createItemRow();
+    checkFormValidity();
+  });
+
+  // Multiple generator click
   btnGenerateFields.addEventListener('click', () => {
-    // Validate number of items
-    const count = parseInt(numItems.value);
+    const count = parseInt(numItemsInput.value);
     if (isNaN(count) || count < 1 || count > 20) {
-      itemsError.textContent = "Please enter a valid number of items (1-20).";
+      itemsError.textContent = "Please enter a valid count (1-20).";
       return;
     }
     itemsError.textContent = "";
-    
-    // Generate rows
-    itemsTbody.innerHTML = '';
     for (let i = 0; i < count; i++) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" class="item-name" required placeholder="Item ${i+1}"></td>
-        <td><input type="number" class="item-price" required min="0" step="0.01" placeholder="0.00"></td>
-        <td><input type="number" class="item-qty" required min="1" placeholder="1"></td>
-      `;
-      itemsTbody.appendChild(tr);
+      createItemRow();
     }
-    
-    dynamicFieldsContainer.classList.remove('hidden');
-    btnGenerateBill.disabled = false;
+    numItemsInput.value = "";
+    checkFormValidity();
   });
 
+  // --- CALCULATION ENGINE ---
+  const recalculateBill = () => {
+    const rows = itemsTbody.querySelectorAll('.item-row');
+    let subtotal = 0;
+
+    rows.forEach(row => {
+      const name = row.querySelector('.item-name').value.trim();
+      const price = parseFloat(row.querySelector('.item-price').value);
+      const qty = parseInt(row.querySelector('.item-qty').value);
+
+      if (name && !isNaN(price) && price >= 0 && !isNaN(qty) && qty >= 1) {
+        subtotal += price * qty;
+      }
+    });
+
+    // Config-driven rates calculations
+    const discountAmount = subtotal * (config.discount / 100);
+    const discountedTotal = subtotal - discountAmount;
+    const gst = subtotal * (config.gst / 100);
+    const cgst = subtotal * (config.gst / 2 / 100);
+    const sgst = subtotal * (config.gst / 2 / 100);
+    const gasCharge = subtotal * (config.gas / 100);
+    const finalBill = discountedTotal + gst + cgst + sgst + gasCharge;
+
+    document.querySelectorAll('#rcpt-total-cost').forEach(el => el.textContent = formatCurrency(subtotal));
+    document.querySelectorAll('#rcpt-discount').forEach(el => el.textContent = formatCurrency(discountedTotal));
+    document.querySelectorAll('#rcpt-gst').forEach(el => el.textContent = formatCurrency(gst));
+    document.querySelectorAll('#rcpt-cgst').forEach(el => el.textContent = formatCurrency(cgst));
+    document.querySelectorAll('#rcpt-sgst').forEach(el => el.textContent = formatCurrency(sgst));
+    document.querySelectorAll('#rcpt-gas').forEach(el => el.textContent = formatCurrency(gasCharge));
+    document.querySelectorAll('#rcpt-final-bill').forEach(el => el.textContent = formatCurrency(finalBill));
+    document.querySelectorAll('#rcpt-saved').forEach(el => el.textContent = formatCurrency(discountAmount));
+
+    return {
+      subtotal,
+      discountAmount,
+      discountedTotal,
+      gst,
+      cgst,
+      sgst,
+      gasCharge,
+      finalBill
+    };
+  };
+
+  // --- INPUT VALIDATIONS ---
+  phoneNumber.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    validatePhoneRealtime();
+    checkFormValidity();
+  });
+
+  customerName.addEventListener('input', () => {
+    validateNameRealtime();
+    checkFormValidity();
+  });
+
+  const validateNameRealtime = () => {
+    if (customerName.value.trim().length > 0) {
+      nameError.textContent = "";
+      customerName.style.borderColor = "var(--border-subtle)";
+      return true;
+    } else {
+      customerName.style.borderColor = "rgba(255, 255, 255, 0.08)";
+      return false;
+    }
+  };
+
+  const validatePhoneRealtime = () => {
+    const val = phoneNumber.value;
+    if (val.length === 10) {
+      phoneError.textContent = "";
+      phoneNumber.style.borderColor = "var(--border-subtle)";
+      return true;
+    } else if (val.length > 0 && val.length < 10) {
+      phoneError.textContent = "Phone number must be exactly 10 digits.";
+      phoneNumber.style.borderColor = "var(--error)";
+      return false;
+    } else {
+      phoneNumber.style.borderColor = "rgba(255, 255, 255, 0.08)";
+      return false;
+    }
+  };
+
+  const checkFormValidity = () => {
+    const isNameValid = customerName.value.trim().length > 0;
+    const isPhoneValid = /^\d{10}$/.test(phoneNumber.value);
+    const rows = itemsTbody.querySelectorAll('.item-row');
+    let areItemsValid = rows.length > 0;
+
+    rows.forEach(row => {
+      const name = row.querySelector('.item-name').value.trim();
+      const price = parseFloat(row.querySelector('.item-price').value);
+      const qty = parseInt(row.querySelector('.item-qty').value);
+
+      if (!name || isNaN(price) || price < 0 || isNaN(qty) || qty < 1) {
+        areItemsValid = false;
+      }
+    });
+
+    btnGenerateBill.disabled = !(isNameValid && isPhoneValid && areItemsValid);
+  };
+
+  // --- BILL COMPILING / PERSISTENCE ---
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
-    // Clear previous errors
     nameError.textContent = "";
     phoneError.textContent = "";
+    itemsError.textContent = "";
+
     let isValid = true;
 
-    // Validate Customer Name
     if (!customerName.value.trim()) {
       nameError.textContent = "Customer name is required.";
+      customerName.style.borderColor = "var(--error)";
+      isValid = false;
+    }
+    if (!/^\d{10}$/.test(phoneNumber.value)) {
+      phoneError.textContent = "Please enter a valid 10-digit phone number.";
+      phoneNumber.style.borderColor = "var(--error)";
       isValid = false;
     }
 
-    // Validate Phone Number
-    if (!/^\d{10}$/.test(phoneNumber.value)) {
-      phoneError.textContent = "Please enter a valid 10-digit phone number.";
+    const rows = itemsTbody.querySelectorAll('.item-row');
+    let itemsValid = true;
+    if (rows.length === 0) {
+      itemsError.textContent = "At least one item is required.";
+      isValid = false;
+    }
+
+    const itemsData = [];
+    rows.forEach(row => {
+      const nameInput = row.querySelector('.item-name');
+      const priceInput = row.querySelector('.item-price');
+      const qtyInput = row.querySelector('.item-qty');
+
+      const name = nameInput.value.trim();
+      const price = parseFloat(priceInput.value);
+      const qty = parseInt(qtyInput.value);
+
+      let rowValid = true;
+      if (!name) { nameInput.style.borderColor = "var(--error)"; rowValid = false; }
+      if (isNaN(price) || price < 0) { priceInput.style.borderColor = "var(--error)"; rowValid = false; }
+      if (isNaN(qty) || qty < 1) { qtyInput.style.borderColor = "var(--error)"; rowValid = false; }
+
+      if (!rowValid) {
+        itemsValid = false;
+      } else {
+        itemsData.push({ name, price, qty, total: price * qty });
+      }
+    });
+
+    if (!itemsValid) {
+      itemsError.textContent = "Please fix highlighted fields in the items table.";
       isValid = false;
     }
 
     if (!isValid) return;
 
-    // Calculate Items
-    const names = document.querySelectorAll('.item-name');
-    const prices = document.querySelectorAll('.item-price');
-    const qtys = document.querySelectorAll('.item-qty');
-    
-    let ba = 0;
-    const itemsData = [];
+    // Calculations Compile
+    const calc = recalculateBill();
 
-    let itemsValid = true;
-    for (let i = 0; i < names.length; i++) {
-      const name = names[i].value.trim();
-      const price = parseFloat(prices[i].value);
-      const qty = parseInt(qtys[i].value);
+    // Sequential Invoice generation
+    let lastInvoice = parseInt(localStorage.getItem('vvce_last_invoice') || '1000') + 1;
+    localStorage.setItem('vvce_last_invoice', lastInvoice.toString());
+    currentInvoiceNum = `#VVCE-${lastInvoice}`;
 
-      let rowValid = true;
-      if (!name) { 
-        names[i].style.borderColor = "var(--error)"; 
-        rowValid = false; 
-      } else { 
-        names[i].style.borderColor = "var(--border-color)"; 
-      }
-      
-      if (isNaN(price) || price < 0) { 
-        prices[i].style.borderColor = "var(--error)"; 
-        rowValid = false; 
-      } else { 
-        prices[i].style.borderColor = "var(--border-color)"; 
-      }
-      
-      if (isNaN(qty) || qty < 1) { 
-        qtys[i].style.borderColor = "var(--error)"; 
-        rowValid = false; 
-      } else { 
-        qtys[i].style.borderColor = "var(--border-color)"; 
-      }
-      
-      if (!rowValid) {
-        itemsValid = false;
-      } else {
-        const total = price * qty;
-        ba += total;
-        itemsData.push({ name, price, qty, total });
-      }
+    // Timestamps
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const timeStr = `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+
+    // Create Invoice Transaction Object
+    const newInvoiceObj = {
+      invoiceNum: currentInvoiceNum,
+      customerName: customerName.value.trim(),
+      phoneNumber: phoneNumber.value,
+      orderType: orderType.value,
+      tableNum: orderType.value === "Dine-In" ? tableNum.value : "N/A",
+      deliveryApp: orderType.value === "Delivery" ? deliveryApp.value : "N/A",
+      paymentMethod: paymentMethod.value,
+      items: itemsData,
+      subtotal: calc.subtotal,
+      discount: calc.discountedTotal,
+      gst: calc.gst,
+      cgst: calc.cgst,
+      sgst: calc.sgst,
+      gas: calc.gasCharge,
+      finalBill: calc.finalBill,
+      saved: calc.discountAmount,
+      date: dateStr,
+      time: timeStr,
+      timestamp: Date.now()
+    };
+
+    // Save and update analytics
+    saveTransaction(newInvoiceObj);
+
+    // Render receipt visually
+    populateReceipt(newInvoiceObj);
+
+    // Display receipt
+    billPanel.classList.remove('hidden');
+    if (window.innerWidth <= 960) {
+      billPanel.scrollIntoView({ behavior: 'smooth' });
     }
 
-    if (!itemsValid) {
-      alert("Please fill all generated item fields correctly before generating the bill.");
-      return;
+    // Receipt Slide animation
+    const receiptCard = document.getElementById('receipt-card');
+    receiptCard.style.animation = 'none';
+    void receiptCard.offsetWidth; // trigger reflow
+    receiptCard.style.animation = 'receipt-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+  });
+
+  // Populate Receipt UI Card
+  const populateReceipt = (invoice) => {
+    rcptInvoiceNum.textContent = invoice.invoiceNum;
+    rcptDateText.textContent = invoice.date;
+    rcptTimeText.textContent = invoice.time;
+    rcptOrderType.textContent = invoice.orderType;
+    rcptTableNumSpan.textContent = `Table ${invoice.tableNum}`;
+    rcptDeliveryApp.textContent = invoice.deliveryApp || "N/A";
+    rcptPayMethod.textContent = invoice.paymentMethod;
+
+    if (invoice.orderType === "Dine-In") {
+      rcptTableRow.style.display = "";
+      rcptDeliveryRow.style.display = "none";
+    } else if (invoice.orderType === "Delivery") {
+      rcptTableRow.style.display = "none";
+      rcptDeliveryRow.style.display = "";
+    } else {
+      rcptTableRow.style.display = "none";
+      rcptDeliveryRow.style.display = "none";
     }
 
-    // Logic replicated from C Code
-    const dis = ba * 0.20;
-    const dis1 = ba - dis; // Discounted total amount
-    const gst = ba * 0.05;
-    const cgst = ba * 0.025;
-    const sgst = ba * 0.025;
-    const gas = ba * 0.05;
-    const finalBill = dis1 + gst + cgst + sgst + gas;
-
-    // Render Bill Items
-    const receiptItems = document.getElementById('receipt-items');
+    // Items table rows
     receiptItems.innerHTML = '';
-    
-    itemsData.forEach(item => {
+    invoice.items.forEach(item => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${item.name}</td>
-        <td>${formatCurrency(item.price)}</td>
-        <td>${item.qty}</td>
-        <td>${formatCurrency(item.total)}</td>
+        <td style="text-align: left;">${item.name}</td>
+        <td style="text-align: right;">${formatCurrency(item.price)}</td>
+        <td style="text-align: right;">${item.qty}</td>
+        <td style="text-align: right;">${formatCurrency(item.total)}</td>
       `;
       receiptItems.appendChild(tr);
     });
 
-    // Populate Receipt Totals
-    document.getElementById('rcpt-total-cost').textContent = formatCurrency(ba);
-    document.getElementById('rcpt-discount').textContent = formatCurrency(dis1);
-    document.getElementById('rcpt-gst').textContent = formatCurrency(gst);
-    document.getElementById('rcpt-cgst').textContent = formatCurrency(cgst);
-    document.getElementById('rcpt-sgst').textContent = formatCurrency(sgst);
-    document.getElementById('rcpt-gas').textContent = formatCurrency(gas);
-    document.getElementById('rcpt-final-bill').textContent = formatCurrency(finalBill);
+    // Populate calculations values
+    document.querySelectorAll('#rcpt-total-cost').forEach(el => el.textContent = formatCurrency(invoice.subtotal));
+    document.querySelectorAll('#rcpt-discount').forEach(el => el.textContent = formatCurrency(invoice.discount));
+    document.querySelectorAll('#rcpt-gst').forEach(el => el.textContent = formatCurrency(invoice.gst));
+    document.querySelectorAll('#rcpt-cgst').forEach(el => el.textContent = formatCurrency(invoice.cgst));
+    document.querySelectorAll('#rcpt-sgst').forEach(el => el.textContent = formatCurrency(invoice.sgst));
+    document.querySelectorAll('#rcpt-gas').forEach(el => el.textContent = formatCurrency(invoice.gas));
+    document.querySelectorAll('#rcpt-final-bill').forEach(el => el.textContent = formatCurrency(invoice.finalBill));
+    document.querySelectorAll('#rcpt-saved').forEach(el => el.textContent = formatCurrency(invoice.saved));
 
-    // Populate Customer Details
-    document.getElementById('rcpt-cname').textContent = customerName.value.trim();
-    document.getElementById('rcpt-cphone').textContent = phoneNumber.value;
-    document.getElementById('rcpt-cname-footer').textContent = customerName.value.trim();
-    
-    // Savings Badge
-    document.getElementById('rcpt-saved').textContent = formatCurrency(dis);
+    document.getElementById('rcpt-cname').textContent = invoice.customerName;
+    document.getElementById('rcpt-cphone').textContent = invoice.phoneNumber;
+    document.getElementById('rcpt-cname-footer').textContent = invoice.customerName.toUpperCase();
 
-    // Show panel
-    billPanel.classList.remove('hidden');
-    
-    // Scroll to bill on mobile or small desktop
-    if (window.innerWidth <= 900) {
-      billPanel.scrollIntoView({ behavior: 'smooth' });
+    // Barcode value sync
+    rcptBarcodeVal.textContent = `VVCE-POS-${invoice.invoiceNum.replace('#', '')}`;
+
+    // UPI QR Code generator
+    if (invoice.paymentMethod === "UPI") {
+      rcptQrWrapper.classList.remove('hidden');
+      rcptQrImg.src = "Screenshot_20260522_094545_Gallery.jpg";
+      rcptQrUpiId.textContent = config.upi;
+    } else {
+      rcptQrWrapper.classList.add('hidden');
+      rcptQrImg.src = "";
     }
+  };
+
+  // --- INVOICE HISTORY DRAWER WORKFLOW ---
+  const openHistoryDrawer = () => {
+    historyDrawer.classList.remove('hidden');
+    historyDrawerOverlay.classList.remove('hidden');
+    renderHistory();
+  };
+
+  const closeHistoryDrawer = () => {
+    historyDrawer.classList.add('hidden');
+    historyDrawerOverlay.classList.add('hidden');
+  };
+
+  const renderHistory = (searchVal = "") => {
+    historyList.innerHTML = '';
+    const query = searchVal.trim().toLowerCase();
+
+    // Sort transactions latest first
+    const sorted = [...transactions].sort((a, b) => b.timestamp - a.timestamp);
+
+    const filtered = sorted.filter(t => {
+      return t.customerName.toLowerCase().includes(query) ||
+             t.phoneNumber.includes(query) ||
+             t.invoiceNum.toLowerCase().includes(query);
+    });
+
+    if (filtered.length === 0) {
+      historyList.innerHTML = `<div class="no-history-msg">No invoices found</div>`;
+      return;
+    }
+
+    filtered.forEach(invoice => {
+      const card = document.createElement('div');
+      card.className = 'history-invoice-card';
+      
+      card.innerHTML = `
+        <div class="history-card-header">
+          <span class="history-bill-num">${invoice.invoiceNum}</span>
+          <span class="history-bill-date">${invoice.date} ${invoice.time}</span>
+        </div>
+        <div class="history-cust-name">${invoice.customerName}</div>
+        <div class="history-card-footer">
+          <span>Items: ${invoice.items.reduce((acc, item) => acc + item.qty, 0)}</span>
+          <span class="history-bill-amount">${formatCurrency(invoice.finalBill)}</span>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        populateReceipt(invoice);
+        billPanel.classList.remove('hidden');
+        billPanel.scrollIntoView({ behavior: 'smooth' });
+        closeHistoryDrawer();
+      });
+
+      historyList.appendChild(card);
+    });
+  };
+
+  btnOpenHistory.addEventListener('click', openHistoryDrawer);
+  btnCloseHistory.addEventListener('click', closeHistoryDrawer);
+  historyDrawerOverlay.addEventListener('click', closeHistoryDrawer);
+  historySearch.addEventListener('input', () => {
+    renderHistory(historySearch.value);
   });
 
+  // --- ADMIN SETTINGS MODAL WORKFLOW ---
+  const openSettingsModal = () => {
+    setDiscountInput.value = config.discount;
+    setGstInput.value = config.gst;
+    setGasInput.value = config.gas;
+    setUpiInput.value = config.upi;
+    settingsModal.classList.remove('hidden');
+  };
+
+  const closeSettingsModal = () => {
+    settingsModal.classList.add('hidden');
+  };
+
+  btnOpenSettings.addEventListener('click', openSettingsModal);
+  btnCloseSettings.addEventListener('click', closeSettingsModal);
+  btnCancelSettings.addEventListener('click', closeSettingsModal);
+
+  btnSaveSettings.addEventListener('click', () => {
+    const disc = parseInt(setDiscountInput.value);
+    const gstVal = parseFloat(setGstInput.value);
+    const gasVal = parseFloat(setGasInput.value);
+    const upiVal = setUpiInput.value.trim();
+
+    if (isNaN(disc) || disc < 0 || disc > 100) {
+      alert("Please enter a valid discount percentage (0-100).");
+      return;
+    }
+    if (isNaN(gstVal) || gstVal < 0 || gstVal > 100) {
+      alert("Please enter a valid GST percentage (0-100).");
+      return;
+    }
+    if (isNaN(gasVal) || gasVal < 0 || gasVal > 100) {
+      alert("Please enter a valid Gas Charge percentage (0-100).");
+      return;
+    }
+    if (!upiVal) {
+      alert("UPI merchant address is required.");
+      return;
+    }
+
+    config = {
+      discount: disc,
+      gst: gstVal,
+      gas: gasVal,
+      upi: upiVal
+    };
+
+    localStorage.setItem('vvce_config', JSON.stringify(config));
+    
+    // Reload configurations labels on receipt
+    loadConfigurations();
+    
+    // Recalculate bill based on new values
+    recalculateBill();
+    
+    closeSettingsModal();
+  });
+
+  // --- RESET & ORDER CANCELLATION ---
   btnReset.addEventListener('click', () => {
     form.reset();
-    dynamicFieldsContainer.classList.add('hidden');
     itemsTbody.innerHTML = '';
-    btnGenerateBill.disabled = true;
-    billPanel.classList.add('hidden');
+    createItemRow();
+
+    // Clear validation styling
     nameError.textContent = "";
     phoneError.textContent = "";
     itemsError.textContent = "";
+    customerName.style.borderColor = "";
+    phoneNumber.style.borderColor = "";
+
+    // Reset default selections
+    orderType.value = "Dine-In";
+    tableGroup.style.display = "";
+    deliveryGroup.style.display = "none";
+    paymentMethod.value = "Cash";
+
+    btnGenerateBill.disabled = true;
+    billPanel.classList.add('hidden');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  // --- PRINT RECEIPT TRIGGER ---
   btnPrint.addEventListener('click', () => {
     window.print();
   });
+
+  // --- INIT BOOTSTRAPPING ---
+  loadConfigurations();
+  loadTransactions();
+  updateAnalytics();
+  renderMenu();
+  createItemRow();
 });
