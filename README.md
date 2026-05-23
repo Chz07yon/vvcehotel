@@ -1,6 +1,6 @@
-# 🏨 VVCE HOTEL - Premium Billing Terminal
+# 🏨 VVCE RESTAURANT - Premium Billing Terminal
 
-Welcome to the **VVCE Hotel Premium Billing Terminal**, a modern, responsive, and feature-rich Point-of-Sale (POS) application designed specifically for the Vidyavardhaka College of Engineering campus dining.
+Welcome to the **VVCE Restaurant Premium Billing Terminal**, a modern, responsive, and feature-rich Point-of-Sale (POS) application designed specifically for the Vidyavardhaka College of Engineering campus dining.
 
 This client-side web application operates as a standalone desktop/tablet-optimized cashier console that lets users build invoices, track real-time sales metrics, search menu inventories, generate thermal-style invoices with custom configurations (tax, discounts, gas charges), output print-ready receipts, and log transactions locally.
 
@@ -107,7 +107,7 @@ The [C_Base.c](file:///c:/Extacuricular/Antigravity/CABA/C_Base.c) file is the i
    * **Total Bill Amount:** Computed as `dis1 + gst + cgst + sgst + gas` (equivalent to 95% of the original base amount due to the 20% discount and 15% cumulative taxes/charges).
 5. **Formatted Console Printout:**
    * Generates a textual receipt layout in the CLI complete with:
-     * Header decorations: `******VVCE HOTEL******`
+     * Header decorations: `******VVCE RESTAURANT******`
      * Tabular itemized columns: `FOOD NAME`, `PRICE`, `QUANTITY`, `TOTAL`
      * Cost breakups: Total Cost, 20% Discounted price, GST/CGST/SGST, and Gas Charges
      * Customer details (Name, Phone number printed sequentially)

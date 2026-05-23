@@ -29,7 +29,7 @@ int main() {
     h[p].total = h[p].price * h[p].quantity;
   }
   printf("\n############################################################");
-  printf("\n\t\t  ******VVCE HOTEL******");
+  printf("\n\t\t  ******VVCE RESTAURANT******");
   printf("\n############################################################");
   printf("\nFOOD NAME\tPRICE\t\tQUANTITY\tTOTAL");
   printf("\n============================================================");

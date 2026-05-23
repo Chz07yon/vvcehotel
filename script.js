@@ -24,14 +24,61 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "Cold Milkshake", price: 70.00, category: "beverages", icon: "🥛" }
   ];
 
-  // Default Terminal Configurations
+  // Default Terminal Configurations & Master Data
+  const DEFAULT_HOTELS = [
+    {
+      id: "vvce-hotel",
+      name: "VVCE Restaurant",
+      tagline: "Vidyavardhaka College of Engineering Campus",
+      address: "Gokulam 3rd Stage, Mysuru, Karnataka 570002",
+      contact: "Ph: 0821-4276200 | info@vvce.ac.in",
+      upi: "vvcehotel@upi",
+      discount: 20,
+      gst: 5,
+      gas: 5
+    },
+    {
+      id: "vvce-elite",
+      name: "VVCE Elite Bistro",
+      tagline: "Premium Dining & Lounge",
+      address: "Jayalakshmipuram, Mysuru, Karnataka 570012",
+      contact: "Ph: 0821-4276300 | elite@vvce.ac.in",
+      upi: "vvceelite@upi",
+      discount: 10,
+      gst: 18,
+      gas: 0
+    }
+  ];
+
+  const DEFAULT_EMPLOYEES = [
+    { id: "e1", hotelId: "vvce-hotel", name: "Ramesh Kumar", role: "Chef", salary: 35000, status: "Paid" },
+    { id: "e2", hotelId: "vvce-hotel", name: "Suresh Patil", role: "Assistant Chef", salary: 22000, status: "Paid" },
+    { id: "e3", hotelId: "vvce-hotel", name: "Anjali Rao", role: "Cashier", salary: 15000, status: "Due" },
+    { id: "e4", hotelId: "vvce-hotel", name: "Vikram Singh", role: "Waiter", salary: 12000, status: "Paid" },
+    { id: "e5", hotelId: "vvce-hotel", name: "Sunitha M.", role: "Cleaner", salary: 10000, status: "Due" },
+    { id: "e6", hotelId: "vvce-elite", name: "Chef Ronald", role: "Head Chef", salary: 50000, status: "Paid" },
+    { id: "e7", hotelId: "vvce-elite", name: "David Miller", role: "Barista", salary: 25000, status: "Due" },
+    { id: "e8", hotelId: "vvce-elite", name: "Meera Nair", role: "Cashier", salary: 18000, status: "Paid" },
+    { id: "e9", hotelId: "vvce-elite", name: "Karan Sharma", role: "Server", salary: 14000, status: "Due" }
+  ];
+
+  const DEFAULT_EXPENSES = [
+    { id: "ex1", hotelId: "vvce-hotel", name: "Electricity Bill", amount: 4500, timestamp: Date.now() },
+    { id: "ex2", hotelId: "vvce-hotel", name: "Water Supplies", amount: 1200, timestamp: Date.now() - 86400000 },
+    { id: "ex3", hotelId: "vvce-elite", name: "Rent & Licensing", amount: 20000, timestamp: Date.now() }
+  ];
+
   let config = {
-    discount: 20, // 20%
-    gst: 5,       // 5%
-    gas: 5,       // 5%
+    discount: 20,
+    gst: 5,
+    gas: 5,
     upi: "vvcehotel@upi"
   };
 
+  let hotels = [];
+  let currentHotelId = "vvce-hotel";
+  let employees = [];
+  let expenses = [];
   let transactions = [];
   let currentInvoiceNum = ""; // Holds compiled invoice number
 
@@ -117,20 +164,125 @@ document.addEventListener('DOMContentLoaded', () => {
   const rcptQrImg = document.getElementById('receipt-qr-img');
   const rcptQrUpiId = document.getElementById('receipt-qr-upi-id');
   const rcptBarcodeVal = document.getElementById('rcpt-barcode-val');
+  const rcptHotelName = document.getElementById('rcpt-hotel-name');
+  const rcptHotelTagline = document.getElementById('rcpt-hotel-tagline');
+  const rcptHotelAddress = document.getElementById('rcpt-hotel-address');
+  const rcptHotelContact = document.getElementById('rcpt-hotel-contact');
+
+  // --- OWNER DASHBOARD ELEMENTS ---
+  const tabTerminalBtn = document.getElementById('tab-terminal-btn');
+  const tabOwnerBtn = document.getElementById('tab-owner-btn');
+  const terminalView = document.getElementById('terminal-view');
+  const ownerView = document.getElementById('owner-view');
+  const brandTitle = document.getElementById('brand-title');
+
+  // Sidebar elements
+  const ownerHotelsList = document.getElementById('owner-hotels-list');
+  const hotelsCount = document.getElementById('hotels-count');
+  const btnShowAddHotel = document.getElementById('btn-show-add-hotel');
+
+  // Main Dashboard elements
+  const dashboardActiveHotelName = document.getElementById('dashboard-active-hotel-name');
+  
+  // Finance KPIs
+  const financeRevenue = document.getElementById('finance-revenue');
+  const financeExpenses = document.getElementById('finance-expenses');
+  const financeProfit = document.getElementById('finance-profit');
+  const profitKpiCard = document.getElementById('profit-kpi-card');
+  const svgChartWrapper = document.getElementById('svg-chart-wrapper');
+
+  // Expense Logger Form
+  const expenseForm = document.getElementById('expense-form');
+  const expenseName = document.getElementById('expense-name');
+  const expenseAmount = document.getElementById('expense-amount');
+  const expensesTbody = document.getElementById('expenses-tbody');
+
+  // Salaries elements
+  const salariesPaidCount = document.getElementById('salaries-paid-count');
+  const salariesDueCount = document.getElementById('salaries-due-count');
+  const salariesDueLiability = document.getElementById('salaries-due-liability');
+  const btnShowAddEmployee = document.getElementById('btn-show-add-employee');
+  const salariesTbody = document.getElementById('salaries-tbody');
+
+  // Modals
+  const addHotelModal = document.getElementById('add-hotel-modal');
+  const btnCloseAddHotel = document.getElementById('btn-close-add-hotel');
+  const btnCancelAddHotel = document.getElementById('btn-cancel-add-hotel');
+  const addHotelForm = document.getElementById('add-hotel-form');
+
+  const addEmployeeModal = document.getElementById('add-employee-modal');
+  const btnCloseAddEmployee = document.getElementById('btn-close-add-employee');
+  const btnCancelAddEmployee = document.getElementById('btn-cancel-add-employee');
+  const addEmployeeForm = document.getElementById('add-employee-form');
 
   // --- INITIAL SETUP ---
   const formatCurrency = (amount) => `₹${amount.toFixed(2)}`;
 
-  // Load Saved Configurations
-  const loadConfigurations = () => {
-    const savedConfig = localStorage.getItem('vvce_config');
-    if (savedConfig) {
+  // Load Saved State & Configurations
+  const loadState = () => {
+    // Load Hotels
+    const savedHotels = localStorage.getItem('vvce_hotels');
+    if (savedHotels) {
       try {
-        config = JSON.parse(savedConfig);
+        hotels = JSON.parse(savedHotels);
       } catch (e) {
-        console.error("Error parsing config from localStorage", e);
+        console.error("Error parsing hotels", e);
+        hotels = [...DEFAULT_HOTELS];
       }
+    } else {
+      hotels = [...DEFAULT_HOTELS];
+      localStorage.setItem('vvce_hotels', JSON.stringify(hotels));
     }
+
+    // Load Active Hotel ID
+    currentHotelId = localStorage.getItem('vvce_current_hotel_id') || 'vvce-hotel';
+    if (!hotels.some(h => h.id === currentHotelId)) {
+      currentHotelId = hotels[0].id;
+    }
+    localStorage.setItem('vvce_current_hotel_id', currentHotelId);
+
+    // Update Brand Title
+    const activeHotel = hotels.find(h => h.id === currentHotelId) || hotels[0];
+    brandTitle.textContent = activeHotel.name.toUpperCase();
+
+    // Load Employees
+    const savedEmployees = localStorage.getItem('vvce_employees');
+    if (savedEmployees) {
+      try {
+        employees = JSON.parse(savedEmployees);
+      } catch (e) {
+        console.error("Error parsing employees", e);
+        employees = [...DEFAULT_EMPLOYEES];
+      }
+    } else {
+      employees = [...DEFAULT_EMPLOYEES];
+      localStorage.setItem('vvce_employees', JSON.stringify(employees));
+    }
+
+    // Load Expenses
+    const savedExpenses = localStorage.getItem('vvce_expenses');
+    if (savedExpenses) {
+      try {
+        expenses = JSON.parse(savedExpenses);
+      } catch (e) {
+        console.error("Error parsing expenses", e);
+        expenses = [...DEFAULT_EXPENSES];
+      }
+    } else {
+      expenses = [...DEFAULT_EXPENSES];
+      localStorage.setItem('vvce_expenses', JSON.stringify(expenses));
+    }
+  };
+
+  const loadConfigurations = () => {
+    const activeHotel = hotels.find(h => h.id === currentHotelId) || hotels[0];
+    config = {
+      discount: activeHotel.discount,
+      gst: activeHotel.gst,
+      gas: activeHotel.gas,
+      upi: activeHotel.upi
+    };
+
     // Populate settings inputs
     setDiscountInput.value = config.discount;
     setGstInput.value = config.gst;
@@ -144,14 +296,30 @@ document.addEventListener('DOMContentLoaded', () => {
     rcptSgstLbl.textContent = (config.gst / 2).toFixed(2);
     rcptGasLbl.textContent = config.gas.toFixed(1);
     rcptQrUpiId.textContent = config.upi;
+
+    // Apply active hotel info to receipt header
+    rcptHotelName.textContent = activeHotel.name.toUpperCase();
+    rcptHotelTagline.textContent = activeHotel.tagline;
+    rcptHotelAddress.textContent = activeHotel.address;
+    rcptHotelContact.textContent = activeHotel.contact;
   };
 
-  // Load Past Transactions
+  // Load Past Transactions (with auto migration for hotelId)
   const loadTransactions = () => {
     const savedTransactions = localStorage.getItem('vvce_transactions');
+    let migrated = false;
     if (savedTransactions) {
       try {
         transactions = JSON.parse(savedTransactions);
+        transactions.forEach(t => {
+          if (!t.hotelId) {
+            t.hotelId = "vvce-hotel";
+            migrated = true;
+          }
+        });
+        if (migrated) {
+          localStorage.setItem('vvce_transactions', JSON.stringify(transactions));
+        }
       } catch (e) {
         console.error("Error parsing transactions", e);
       }
@@ -164,15 +332,20 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('vvce_transactions', JSON.stringify(transactions));
     updateAnalytics();
     renderHistory();
+    if (!ownerView.classList.contains('hidden')) {
+      renderOwnerDashboard();
+    }
   };
 
-  // Update Sales Analytics
+  // Update Sales Analytics (scoped to current active hotel)
   const updateAnalytics = () => {
     let totalRevenue = 0;
     let totalDiscounts = 0;
     const itemCounts = {};
 
-    transactions.forEach(t => {
+    const hotelTransactions = transactions.filter(t => t.hotelId === currentHotelId);
+
+    hotelTransactions.forEach(t => {
       totalRevenue += t.finalBill;
       totalDiscounts += t.saved;
       t.items.forEach(item => {
@@ -191,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     statRevenue.textContent = formatCurrency(totalRevenue);
-    statOrders.textContent = transactions.length;
+    statOrders.textContent = hotelTransactions.length;
     statTopItem.textContent = topItem + (maxQty > 0 ? ` (${maxQty})` : '');
     statDiscounts.textContent = formatCurrency(totalDiscounts);
   };
@@ -594,6 +767,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create Invoice Transaction Object
     const newInvoiceObj = {
+      hotelId: currentHotelId,
       invoiceNum: currentInvoiceNum,
       customerName: customerName.value.trim(),
       phoneNumber: phoneNumber.value,
@@ -712,8 +886,11 @@ document.addEventListener('DOMContentLoaded', () => {
     historyList.innerHTML = '';
     const query = searchVal.trim().toLowerCase();
 
+    // Filter transactions by active hotel
+    const hotelTransactions = transactions.filter(t => t.hotelId === currentHotelId);
+
     // Sort transactions latest first
-    const sorted = [...transactions].sort((a, b) => b.timestamp - a.timestamp);
+    const sorted = [...hotelTransactions].sort((a, b) => b.timestamp - a.timestamp);
 
     const filtered = sorted.filter(t => {
       return t.customerName.toLowerCase().includes(query) ||
@@ -758,6 +935,360 @@ document.addEventListener('DOMContentLoaded', () => {
   historyDrawerOverlay.addEventListener('click', closeHistoryDrawer);
   historySearch.addEventListener('input', () => {
     renderHistory(historySearch.value);
+  });
+
+  // --- OWNER DASHBOARD WORKFLOW ---
+  
+  // Render Hotels list inside the sidebar
+  const renderHotelsList = () => {
+    ownerHotelsList.innerHTML = '';
+    hotelsCount.textContent = hotels.length;
+    
+    hotels.forEach(h => {
+      const card = document.createElement('div');
+      card.className = `hotel-item-card ${h.id === currentHotelId ? 'active' : ''}`;
+      card.innerHTML = `
+        <h5>${h.name}</h5>
+        <p>${h.address}</p>
+        ${h.id === currentHotelId ? '<span class="active-indicator">Active</span>' : ''}
+      `;
+      card.addEventListener('click', () => {
+        if (h.id !== currentHotelId) {
+          selectHotel(h.id);
+        }
+      });
+      ownerHotelsList.appendChild(card);
+    });
+  };
+
+  // Switch Active Hotel
+  const selectHotel = (hotelId) => {
+    currentHotelId = hotelId;
+    localStorage.setItem('vvce_current_hotel_id', currentHotelId);
+    
+    // Reload configurations labels and sync values
+    loadConfigurations();
+    
+    // Recalculate bill
+    recalculateBill();
+    
+    // Sync Brand Title and Dashboard active name
+    const activeHotel = hotels.find(h => h.id === currentHotelId) || hotels[0];
+    brandTitle.textContent = activeHotel.name.toUpperCase();
+    
+    // Refresh Analytics, History and Dashboard
+    updateAnalytics();
+    renderHistory();
+    renderOwnerDashboard();
+  };
+
+  // Render Salaries ledger
+  const renderSalariesLedger = () => {
+    salariesTbody.innerHTML = '';
+    const hotelEmployees = employees.filter(e => e.hotelId === currentHotelId);
+    
+    let paidCount = 0;
+    let dueCount = 0;
+    let dueLiability = 0;
+
+    hotelEmployees.forEach(e => {
+      if (e.status === "Paid") {
+        paidCount++;
+      } else {
+        dueCount++;
+        dueLiability += e.salary;
+      }
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${e.name}</strong></td>
+        <td class="emp-role">${e.role}</td>
+        <td class="emp-salary" style="text-align: right;">${formatCurrency(e.salary)}</td>
+        <td style="text-align: center;">
+          <span class="badge-status ${e.status.toLowerCase()}">${e.status}</span>
+        </td>
+        <td style="text-align: center;">
+          <button type="button" class="btn-toggle-salary" data-id="${e.id}">
+            ${e.status === "Paid" ? "Mark Due" : "Mark Paid"}
+          </button>
+        </td>
+      `;
+
+      tr.querySelector('.btn-toggle-salary').addEventListener('click', () => {
+        toggleEmployeeStatus(e.id);
+      });
+
+      salariesTbody.appendChild(tr);
+    });
+
+    salariesPaidCount.textContent = paidCount;
+    salariesDueCount.textContent = dueCount;
+    salariesDueLiability.textContent = formatCurrency(dueLiability);
+  };
+
+  // Toggle paid/due employee status
+  const toggleEmployeeStatus = (empId) => {
+    const emp = employees.find(e => e.id === empId);
+    if (emp) {
+      emp.status = emp.status === "Paid" ? "Due" : "Paid";
+      localStorage.setItem('vvce_employees', JSON.stringify(employees));
+      renderOwnerDashboard();
+    }
+  };
+
+  // Render Financial Analytics & P&L
+  const renderFinancialAnalytics = () => {
+    // 1. Calculate Revenue
+    const hotelTransactions = transactions.filter(t => t.hotelId === currentHotelId);
+    const totalRevenue = hotelTransactions.reduce((acc, t) => acc + t.finalBill, 0);
+
+    // 2. Calculate Salary Expenses (Paid salaries counted as expense)
+    const hotelEmployees = employees.filter(e => e.hotelId === currentHotelId);
+    const salariesExpense = hotelEmployees.filter(e => e.status === "Paid").reduce((acc, e) => acc + e.salary, 0);
+
+    // 3. Miscellaneous Expenses
+    const hotelExpenses = expenses.filter(ex => ex.hotelId === currentHotelId);
+    const miscExpense = hotelExpenses.reduce((acc, ex) => acc + ex.amount, 0);
+
+    const totalExpenses = salariesExpense + miscExpense;
+    const netProfit = totalRevenue - totalExpenses;
+
+    financeRevenue.textContent = formatCurrency(totalRevenue);
+    financeExpenses.textContent = formatCurrency(totalExpenses);
+    financeProfit.textContent = formatCurrency(netProfit);
+
+    // Style Profit KPI Card based on positive/negative
+    if (netProfit >= 0) {
+      profitKpiCard.className = "kpi-card profit-kpi positive-profit";
+    } else {
+      profitKpiCard.className = "kpi-card profit-kpi negative-profit";
+    }
+
+    // Render Expenses Ledger
+    renderExpensesLedger(hotelExpenses);
+
+    // Render SVG P&L Chart
+    drawFinancialChart(totalRevenue, totalExpenses);
+  };
+
+  // Render Logged Expenses Ledger
+  const renderExpensesLedger = (hotelExpenses) => {
+    expensesTbody.innerHTML = '';
+    if (hotelExpenses.length === 0) {
+      expensesTbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;">No miscellaneous expenses logged</td></tr>`;
+      return;
+    }
+
+    // Sort by timestamp latest first
+    const sorted = [...hotelExpenses].sort((a, b) => b.timestamp - a.timestamp);
+
+    sorted.forEach(ex => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${ex.name}</td>
+        <td style="text-align: right; padding-right: 1.5rem; font-family: 'Share Tech Mono', monospace; font-weight: 600;">
+          ${formatCurrency(ex.amount)}
+        </td>
+        <td style="text-align: center;">
+          <button type="button" class="btn-delete-small" data-id="${ex.id}" title="Delete Expense">&times;</button>
+        </td>
+      `;
+
+      tr.querySelector('.btn-delete-small').addEventListener('click', () => {
+        deleteExpense(ex.id);
+      });
+
+      expensesTbody.appendChild(tr);
+    });
+  };
+
+  // Delete logged expense
+  const deleteExpense = (exId) => {
+    expenses = expenses.filter(ex => ex.id !== exId);
+    localStorage.setItem('vvce_expenses', JSON.stringify(expenses));
+    renderOwnerDashboard();
+  };
+
+  // Draw Financial SVG double bar chart (Revenue vs Expenses)
+  const drawFinancialChart = (revenue, expensesAmt) => {
+    const maxVal = Math.max(revenue, expensesAmt, 1000); // Avoid division by zero
+    const revenueHeight = (revenue / maxVal) * 110;
+    const expensesHeight = (expensesAmt / maxVal) * 110;
+
+    const revenueY = 130 - revenueHeight;
+    const expensesY = 130 - expensesHeight;
+
+    svgChartWrapper.innerHTML = `
+      <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid meet">
+        <!-- Grid lines -->
+        <line x1="40" y1="20" x2="380" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+        <line x1="40" y1="75" x2="380" y2="75" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+        <line x1="40" y1="130" x2="380" y2="130" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+        
+        <!-- Y-Axis Labels -->
+        <text x="32" y="24" fill="var(--text-muted)" font-size="8" text-anchor="end">${formatCurrency(maxVal)}</text>
+        <text x="32" y="79" fill="var(--text-muted)" font-size="8" text-anchor="end">${formatCurrency(maxVal / 2)}</text>
+        <text x="32" y="134" fill="var(--text-muted)" font-size="8" text-anchor="end">₹0.00</text>
+        
+        <!-- Bar: Revenue -->
+        <rect x="110" y="${revenueY}" width="45" height="${revenueHeight}" fill="url(#goldGradient)" rx="4" filter="url(#glowGold)" />
+        <text x="132.5" y="${revenueY - 8}" fill="#fff" font-size="9" text-anchor="middle" font-weight="700">${formatCurrency(revenue)}</text>
+        <text x="132.5" y="144" fill="var(--text-muted)" font-size="9" text-anchor="middle">Revenue</text>
+        
+        <!-- Bar: Expenses -->
+        <rect x="235" y="${expensesY}" width="45" height="${expensesHeight}" fill="url(#redGradient)" rx="4" filter="url(#glowRed)" />
+        <text x="257.5" y="${expensesY - 8}" fill="#fff" font-size="9" text-anchor="middle" font-weight="700">${formatCurrency(expensesAmt)}</text>
+        <text x="257.5" y="144" fill="var(--text-muted)" font-size="9" text-anchor="middle">Expenses</text>
+        
+        <!-- Definitions for gradients & glows -->
+        <defs>
+          <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--accent-gold-hover)" />
+            <stop offset="100%" stop-color="var(--accent-gold-dark)" />
+          </linearGradient>
+          <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ef4444" />
+            <stop offset="100%" stop-color="#991b1b" />
+          </linearGradient>
+          <filter id="glowGold" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="var(--accent-gold)" flood-opacity="0.2" />
+          </filter>
+          <filter id="glowRed" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ef4444" flood-opacity="0.2" />
+          </filter>
+        </defs>
+      </svg>
+    `;
+  };
+
+  // Master Render Dashboard
+  const renderOwnerDashboard = () => {
+    const activeHotel = hotels.find(h => h.id === currentHotelId) || hotels[0];
+    dashboardActiveHotelName.textContent = activeHotel.name;
+
+    renderHotelsList();
+    renderSalariesLedger();
+    renderFinancialAnalytics();
+  };
+
+  // Add Hotel Modal Actions
+  btnShowAddHotel.addEventListener('click', () => {
+    addHotelModal.classList.remove('hidden');
+  });
+
+  const closeAddHotelModal = () => {
+    addHotelModal.classList.add('hidden');
+    addHotelForm.reset();
+  };
+
+  btnCloseAddHotel.addEventListener('click', closeAddHotelModal);
+  btnCancelAddHotel.addEventListener('click', closeAddHotelModal);
+
+  addHotelForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('hotel-name').value.trim();
+    const tagline = document.getElementById('hotel-tagline').value.trim();
+    const address = document.getElementById('hotel-address').value.trim();
+    const contact = document.getElementById('hotel-contact').value.trim();
+    const upi = document.getElementById('hotel-upi').value.trim();
+    const discount = parseInt(document.getElementById('hotel-discount').value) || 0;
+    const gst = parseFloat(document.getElementById('hotel-gst').value) || 0;
+    const gas = parseFloat(document.getElementById('hotel-gas').value) || 0;
+
+    const newHotel = {
+      id: "hotel-" + Date.now(),
+      name,
+      tagline,
+      address,
+      contact,
+      upi,
+      discount,
+      gst,
+      gas
+    };
+
+    hotels.push(newHotel);
+    localStorage.setItem('vvce_hotels', JSON.stringify(hotels));
+    
+    selectHotel(newHotel.id);
+    closeAddHotelModal();
+  });
+
+  // Add Employee Modal Actions
+  btnShowAddEmployee.addEventListener('click', () => {
+    addEmployeeModal.classList.remove('hidden');
+  });
+
+  const closeAddEmployeeModal = () => {
+    addEmployeeModal.classList.add('hidden');
+    addEmployeeForm.reset();
+  };
+
+  btnCloseAddEmployee.addEventListener('click', closeAddEmployeeModal);
+  btnCancelAddEmployee.addEventListener('click', closeAddEmployeeModal);
+
+  addEmployeeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('emp-name').value.trim();
+    const role = document.getElementById('emp-role').value.trim();
+    const salary = parseInt(document.getElementById('emp-salary').value) || 0;
+    const status = document.getElementById('emp-status').value;
+
+    const newEmployee = {
+      id: "emp-" + Date.now(),
+      hotelId: currentHotelId,
+      name,
+      role,
+      salary,
+      status
+    };
+
+    employees.push(newEmployee);
+    localStorage.setItem('vvce_employees', JSON.stringify(employees));
+    
+    renderOwnerDashboard();
+    closeAddEmployeeModal();
+  });
+
+  // Add Expense Inline Form Action
+  expenseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = expenseName.value.trim();
+    const amount = parseInt(expenseAmount.value) || 0;
+
+    if (!name || amount <= 0) return;
+
+    const newExpense = {
+      id: "expense-" + Date.now(),
+      hotelId: currentHotelId,
+      name,
+      amount,
+      timestamp: Date.now()
+    };
+
+    expenses.push(newExpense);
+    localStorage.setItem('vvce_expenses', JSON.stringify(expenses));
+    
+    expenseName.value = '';
+    expenseAmount.value = '';
+    
+    renderOwnerDashboard();
+  });
+
+  // Tab View Switcher Event Listeners
+  tabTerminalBtn.addEventListener('click', () => {
+    tabTerminalBtn.classList.add('active');
+    tabOwnerBtn.classList.remove('active');
+    terminalView.classList.remove('hidden');
+    ownerView.classList.add('hidden');
+  });
+
+  tabOwnerBtn.addEventListener('click', () => {
+    tabOwnerBtn.classList.add('active');
+    tabTerminalBtn.classList.remove('active');
+    ownerView.classList.remove('hidden');
+    terminalView.classList.add('hidden');
+    renderOwnerDashboard();
   });
 
   // --- ADMIN SETTINGS MODAL WORKFLOW ---
@@ -808,6 +1339,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     localStorage.setItem('vvce_config', JSON.stringify(config));
+
+    // Also update this configuration inside the active hotel object
+    const activeHotel = hotels.find(h => h.id === currentHotelId);
+    if (activeHotel) {
+      activeHotel.discount = disc;
+      activeHotel.gst = gstVal;
+      activeHotel.gas = gasVal;
+      activeHotel.upi = upiVal;
+      localStorage.setItem('vvce_hotels', JSON.stringify(hotels));
+    }
     
     // Reload configurations labels on receipt
     loadConfigurations();
@@ -849,6 +1390,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- INIT BOOTSTRAPPING ---
+  loadState();
   loadConfigurations();
   loadTransactions();
   updateAnalytics();

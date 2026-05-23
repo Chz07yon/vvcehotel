@@ -1377,6 +1377,628 @@ button {
   }
 }
 
+/* Navigation Tabs Styling */
+.header-nav {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.25rem;
+  border-radius: 30px;
+  gap: 0.25rem;
+  margin: 0 1rem;
+}
+
+.nav-tab {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: 25px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nav-tab.active {
+  background: var(--accent-gold);
+  color: var(--text-dark);
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(223, 178, 54, 0.25);
+}
+
+/* Tab/View Content Toggle */
+.view-content {
+  width: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.view-content.hidden {
+  display: none !important;
+}
+
+/* Owner Dashboard Layout */
+.owner-dashboard-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.owner-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.owner-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Owner Dashboard Cards */
+.owner-card {
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Profile Card Styling */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border-left: 4px solid var(--accent-gold);
+}
+
+.profile-avatar {
+  background: rgba(223, 178, 54, 0.1);
+  color: var(--accent-gold);
+  padding: 0.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.profile-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.profile-info .status-indicator {
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  display: inline-flex;
+}
+
+/* Hotels Manager Card styling */
+.hotels-manager-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hotels-manager-card .card-header h4 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+}
+
+.badge {
+  background: rgba(223, 178, 54, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid var(--border-subtle);
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.hotels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Hotel Item Card (Switcher Option) */
+.hotel-item-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hotel-item-card:hover {
+  background: rgba(223, 178, 54, 0.04);
+  border-color: rgba(223, 178, 54, 0.2);
+  transform: translateY(-2px);
+}
+
+.hotel-item-card.active {
+  border-color: var(--accent-gold);
+  background: rgba(223, 178, 54, 0.08);
+  box-shadow: 0 0 15px var(--accent-gold-glow);
+}
+
+.hotel-item-card h5 {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hotel-item-card p {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hotel-item-card .active-indicator {
+  position: absolute;
+  top: 0.85rem;
+  right: 1rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--accent-gold);
+  letter-spacing: 0.5px;
+}
+
+/* Main Content Workspace */
+.dashboard-unified-tab {
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tab-header-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 1rem;
+}
+
+.tab-header-title span {
+  color: var(--accent-gold);
+  text-shadow: 0 0 8px rgba(223, 178, 54, 0.3);
+}
+
+.owner-sub-card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.sub-card-title {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-gold);
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.5rem;
+}
+
+/* KPI Finance Grid */
+.finance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: rgba(255, 255, 255, 0.012);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border: 1px solid transparent;
+}
+
+.revenue-kpi .kpi-icon {
+  background: rgba(223, 178, 54, 0.08);
+  color: var(--accent-gold);
+  border-color: rgba(223, 178, 54, 0.15);
+}
+.revenue-kpi {
+  border-bottom: 3px solid var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(223, 178, 54, 0.03);
+}
+
+.expense-kpi .kpi-icon {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.15);
+}
+.expense-kpi {
+  border-bottom: 3px solid var(--error);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.03);
+}
+
+.profit-kpi .kpi-icon {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--success);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+.profit-kpi.positive-profit {
+  border-bottom: 3px solid var(--success);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);
+}
+.profit-kpi.negative-profit {
+  border-bottom: 3px solid var(--error);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.05);
+}
+.profit-kpi.negative-profit .kpi-icon {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.15);
+}
+
+.kpi-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-details h3 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.4rem;
+  color: #fff;
+  margin-top: 0.2rem;
+  font-weight: 700;
+}
+
+/* Analytics SVG Chart styles */
+.analytics-chart-container {
+  background: rgba(5, 8, 16, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.analytics-chart-container h5 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 1rem;
+}
+
+.legend-item {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.income {
+  background: var(--accent-gold);
+}
+
+.legend-dot.expenses {
+  background: var(--error);
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Expenses Log list */
+.misc-expenses-block h5 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.05);
+  padding-top: 1.25rem;
+}
+
+.inline-form {
+  margin-bottom: 0.75rem;
+}
+
+.inline-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.inline-group {
+  margin-bottom: 0 !important;
+}
+
+.inline-form input {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.expenses-ledger-container {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.simple-table th {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.simple-table td {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.btn-delete-small {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--error);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  transition: all 0.2s ease;
+}
+.btn-delete-small:hover {
+  background: var(--error);
+  color: #fff;
+  border-color: var(--error);
+}
+
+/* Salaries Ledger styles */
+.salaries-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ledger-summary {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.summary-stat {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.summary-stat strong {
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.summary-stat strong.text-error {
+  color: #f87171;
+}
+
+.salaries-table-container {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.salaries-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.salaries-table th {
+  background: rgba(255, 255, 255, 0.015);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.salaries-table td {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  vertical-align: middle;
+}
+
+.salaries-table .emp-role {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.salaries-table .emp-salary {
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 600;
+}
+
+/* Glowing Badges for Salaries status */
+.badge-status {
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.badge-status.paid {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--success);
+  border-color: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.05);
+}
+
+.badge-status.due {
+  background: rgba(223, 178, 54, 0.08);
+  color: var(--accent-gold);
+  border-color: rgba(223, 178, 54, 0.15);
+  box-shadow: 0 0 8px rgba(223, 178, 54, 0.05);
+}
+
+/* Toggle Switch button */
+.btn-toggle-salary {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  width: 90px;
+}
+
+.btn-toggle-salary:hover {
+  background: rgba(223, 178, 54, 0.15);
+  border-color: var(--accent-gold);
+  color: #fff;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 960px) {
+  .header-nav {
+    width: 100%;
+    margin: 0.5rem 0;
+    justify-content: center;
+  }
+  .owner-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small buttons override */
+.btn-small {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.8rem !important;
+  width: auto !important;
+  border-radius: 6px !important;
+  height: auto !important;
+}
+
 /* Print CSS Stylesheet */
 @media print {
   /* Hide everything except the receipt card */

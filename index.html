@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VVCE HOTEL - Premium Billing Terminal</title>
+  <title>VVCE Restaurant - Premium Billing Terminal</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,10 +25,20 @@
           </svg>
         </div>
         <div class="brand-text">
-          <h1>VVCE HOTEL</h1>
+          <h1 id="brand-title">VVCE Restaurant</h1>
           <span class="brand-subtitle">Premium Billing Terminal</span>
         </div>
       </div>
+      <nav class="header-nav no-print" id="header-nav">
+        <button type="button" class="nav-tab active" id="tab-terminal-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          Terminal Console
+        </button>
+        <button type="button" class="nav-tab" id="tab-owner-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          Owner Dashboard
+        </button>
+      </nav>
       <div class="header-meta">
         <div class="time-widget">
           <span class="clock-time" id="clock-time">09:30:00 AM</span>
@@ -104,8 +114,10 @@
       </div>
     </section>
 
-    <!-- Main Content Container -->
-    <div class="container">
+    <!-- Terminal View -->
+    <div id="terminal-view" class="view-content">
+      <!-- Main Content Container -->
+      <div class="container">
 
       <!-- Billing Console Form Panel -->
       <div class="form-panel no-print">
@@ -320,10 +332,10 @@
                     d="M12 2L2 22h20L12 2zm0 3.99L18.8 18H5.2L12 5.99zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                 </svg>
               </div>
-              <div class="receipt-title">VVCE HOTEL</div>
-              <div class="receipt-tagline">Vidyavardhaka College of Engineering Campus</div>
-              <div class="receipt-address">Gokulam 3rd Stage, Mysuru, Karnataka 570002</div>
-              <div class="receipt-contact">Ph: 0821-4276200 | info@vvce.ac.in</div>
+              <div class="receipt-title" id="rcpt-hotel-name">VVCE Restaurant</div>
+              <div class="receipt-tagline" id="rcpt-hotel-tagline">Vidyavardhaka College of Engineering Campus</div>
+              <div class="receipt-address" id="rcpt-hotel-address">Gokulam 3rd Stage, Mysuru, Karnataka 570002</div>
+              <div class="receipt-contact" id="rcpt-hotel-contact">Ph: 0821-4276200 | info@vvce.ac.in</div>
             </div>
 
             <div class="divider-dotted"></div>
@@ -450,6 +462,284 @@
         </div>
       </div>
 
+    </div> <!-- /container -->
+    </div> <!-- /terminal-view -->
+
+    <!-- Owner Dashboard View -->
+    <div id="owner-view" class="view-content hidden no-print">
+      <div class="owner-dashboard-grid">
+        
+        <!-- Left Sidebar: Owner Profile & Hotel Switcher -->
+        <aside class="owner-sidebar">
+          <!-- Profile Card -->
+          <div class="owner-card profile-card">
+            <div class="profile-avatar">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+              </svg>
+            </div>
+            <div class="profile-info">
+              <h3>Hotel Administrator</h3>
+              <p class="profile-role">Executive Owner Mode</p>
+              <div class="status-indicator">
+                <span class="status-dot online"></span>
+                <span class="status-label">Active Session</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hotels List & Manager -->
+          <div class="owner-card hotels-manager-card">
+            <div class="card-header">
+              <h4>My Hotels</h4>
+              <span class="badge" id="hotels-count">2</span>
+            </div>
+            <div class="hotels-list" id="owner-hotels-list">
+              <!-- Dynamically populated -->
+            </div>
+            <button type="button" class="btn-primary btn-small" id="btn-show-add-hotel" style="margin-top: 1rem; width: 100%;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              Add New Hotel
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right Content Area: Salaries & Financial Analytics -->
+        <main class="owner-main-content">
+          
+          <!-- Unified Salaries & P&L Dashboard Container -->
+          <div class="dashboard-unified-tab">
+            <div class="tab-header-title">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+              Hotel Control Center: <span id="dashboard-active-hotel-name">VVCE Restaurant</span>
+            </div>
+
+            <!-- Financial Analytics Section -->
+            <div class="owner-sub-card finance-section">
+              <h3 class="sub-card-title">📈 Financial Analytics & P&L</h3>
+              
+              <div class="finance-grid">
+                <!-- KPI metrics cards -->
+                <div class="kpi-card revenue-kpi">
+                  <div class="kpi-icon">₹</div>
+                  <div class="kpi-details">
+                    <span class="kpi-label">Gross Revenue</span>
+                    <h3 id="finance-revenue">₹0.00</h3>
+                  </div>
+                </div>
+                <div class="kpi-card expense-kpi">
+                  <div class="kpi-icon">💸</div>
+                  <div class="kpi-details">
+                    <span class="kpi-label">Total Expenses</span>
+                    <h3 id="finance-expenses">₹0.00</h3>
+                  </div>
+                </div>
+                <div class="kpi-card profit-kpi positive-profit" id="profit-kpi-card">
+                  <div class="kpi-icon">📊</div>
+                  <div class="kpi-details">
+                    <span class="kpi-label">Net Profit/Loss</span>
+                    <h3 id="finance-profit">₹0.00</h3>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Analytics Charts (SVG Based) -->
+              <div class="analytics-chart-container">
+                <div class="chart-header">
+                  <h5>P&L Breakdown</h5>
+                  <div class="chart-legend">
+                    <span class="legend-item"><span class="legend-dot income"></span> Revenue</span>
+                    <span class="legend-item"><span class="legend-dot expenses"></span> Expenses</span>
+                  </div>
+                </div>
+                <div class="chart-wrapper" id="svg-chart-wrapper">
+                  <!-- Dynamic SVG Chart injected here -->
+                </div>
+              </div>
+
+              <!-- Log Other Expenses -->
+              <div class="misc-expenses-block">
+                <h5>Log Miscellaneous Expenses</h5>
+                <form id="expense-form" class="inline-form">
+                  <div class="form-row inline-row">
+                    <div class="form-group inline-group" style="flex: 2;">
+                      <input type="text" id="expense-name" placeholder="Rent, Electricity, Supplies..." required>
+                    </div>
+                    <div class="form-group inline-group" style="flex: 1;">
+                      <input type="number" id="expense-amount" placeholder="Amount (₹)" min="1" step="1" required>
+                    </div>
+                    <button type="submit" class="btn-primary btn-small" style="width: auto; height: 42px;">Add Expense</button>
+                  </div>
+                </form>
+                <div class="expenses-ledger-container">
+                  <table class="simple-table font-small">
+                    <thead>
+                      <tr>
+                        <th>Expense Details</th>
+                        <th style="text-align: right; padding-right: 1.5rem;">Amount (₹)</th>
+                        <th style="text-align: center; width: 50px;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="expenses-tbody">
+                      <!-- Logged expenses -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Employee Salaries Section -->
+            <div class="owner-sub-card salaries-section">
+              <h3 class="sub-card-title">💼 Employee Salaries Ledger</h3>
+              
+              <div class="salaries-controls">
+                <div class="ledger-summary">
+                  <span class="summary-stat">Paid: <strong id="salaries-paid-count">0</strong></span>
+                  <span class="summary-stat">Due: <strong id="salaries-due-count">0</strong></span>
+                  <span class="summary-stat">Due Liability: <strong id="salaries-due-liability" class="text-error">₹0.00</strong></span>
+                </div>
+                <button type="button" class="btn-primary btn-small" id="btn-show-add-employee" style="width: auto;">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  Add Employee
+                </button>
+              </div>
+
+              <div class="salaries-table-container">
+                <table class="salaries-table">
+                  <thead>
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Role</th>
+                      <th style="text-align: right;">Salary (₹)</th>
+                      <th style="text-align: center;">Salary Status</th>
+                      <th style="text-align: center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="salaries-tbody">
+                    <!-- Employees list injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+  </div> <!-- /dashboard-shell -->
+
+  <!-- Add Hotel Modal -->
+  <div class="modal-overlay hidden" id="add-hotel-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">🏨 Add New Hotel</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-add-hotel">&times;</button>
+      </div>
+      <form id="add-hotel-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="hotel-name">Hotel Name</label>
+            <div class="input-wrapper">
+              <input type="text" id="hotel-name" required placeholder="VVCE Bistro">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="hotel-tagline">Tagline</label>
+            <div class="input-wrapper">
+              <input type="text" id="hotel-tagline" required placeholder="Gourmet Dining">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="hotel-address">Address</label>
+            <div class="input-wrapper">
+              <input type="text" id="hotel-address" required placeholder="Jayalakshmipuram, Mysuru">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="hotel-contact">Contact Details</label>
+            <div class="input-wrapper">
+              <input type="text" id="hotel-contact" required placeholder="Ph: 0821-4276300 | contact@bistro.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="hotel-upi">Merchant UPI Handle</label>
+            <div class="input-wrapper">
+              <input type="text" id="hotel-upi" required placeholder="vvcebistro@upi">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="hotel-discount">Discount (%)</label>
+              <div class="input-wrapper">
+                <input type="number" id="hotel-discount" min="0" max="100" value="10">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="hotel-gst">GST (%)</label>
+              <div class="input-wrapper">
+                <input type="number" id="hotel-gst" min="0" max="100" value="18">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="hotel-gas">Gas (%)</label>
+              <div class="input-wrapper">
+                <input type="number" id="hotel-gas" min="0" max="100" value="0">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline" id="btn-cancel-add-hotel">Cancel</button>
+          <button type="submit" class="btn-primary" style="width: auto;">Create Hotel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Employee Modal -->
+  <div class="modal-overlay hidden" id="add-employee-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">👤 Add Employee</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-add-employee">&times;</button>
+      </div>
+      <form id="add-employee-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="emp-name">Employee Name</label>
+            <div class="input-wrapper">
+              <input type="text" id="emp-name" required placeholder="Raju Prasad">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="emp-role">Role / Designation</label>
+            <div class="input-wrapper">
+              <input type="text" id="emp-role" required placeholder="Chef, Waiter, Manager...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="emp-salary">Monthly Salary (₹)</label>
+            <div class="input-wrapper">
+              <input type="number" id="emp-salary" min="1" step="1" required placeholder="20000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="emp-status">Salary Status</label>
+            <div class="input-wrapper">
+              <select id="emp-status">
+                <option value="Paid">Paid</option>
+                <option value="Due">Due</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline" id="btn-cancel-add-employee">Cancel</button>
+          <button type="submit" class="btn-primary" style="width: auto;">Add Employee</button>
+        </div>
+      </form>
     </div>
   </div>
 
