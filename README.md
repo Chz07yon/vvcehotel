@@ -90,3 +90,51 @@ This is a serverless client-side web application. No installation, compilation, 
 1. **Clone/Download the repository** to your local drive.
 2. **Double-click** on `index.html` or open it with any modern web browser (Chrome, Edge, Firefox, or Safari).
 3. Alternatively, if you have IDE extensions like *Live Server*, right-click `index.html` and select **"Open with Live Server"**.
+
+---
+
+## 📖 Website Guide & Walkthrough
+
+This guide details how to operate the different views, switch outlets, compile invoices, and analyze financials.
+
+### Part 1: Cashier Terminal (POS Console)
+1. **Accessing the Console**: Make sure the **Terminal Console** tab is selected in the top header.
+2. **Customer & Order Placement**:
+   - Enter the **Customer Name** and a validated **10-digit Phone Number** (letters and extra digits are automatically blocked).
+   - Select the **Order Type**:
+     - *Dine-In*: Prompts for table numbers (1 to 15).
+     - *Delivery*: Reveals a platform dropdown (Zomato, Swiggy, Blinkit, etc.).
+     - *Takeaway*: No extra configuration needed.
+   - Choose the **Payment Method** (Cash, Card, or UPI). Selecting UPI automatically formats a digital QR scan card onto the receipt.
+3. **Injecting Menu Items**:
+   - **Method A (Category Tabs)**: Click on food tabs (e.g., *Breakfast*) and click any item card (e.g., *Masala Dosa*). It automatically appends to the invoice sheet. Click again to increment the quantity.
+   - **Method B (Custom Entry)**: Click **Add Custom Item Line** at the bottom of the table to enter custom food items, base prices, and quantities manually.
+   - **Method C (Batch Generator)**: Type a number in the **Quick-add rows** input (e.g., `4`) and click **Add Rows** to generate multiple blank lines.
+4. **Invoice Compiling & Preview**:
+   - Once items are added and fields are valid, the **Compile & Generate Bill** button unlocks.
+   - Click it to view the styled thermal receipt preview which includes tax breakdowns (GST split, gas charges, discount savings, barcode, and scan-to-pay QR codes).
+5. **Invoice Printing**:
+   - Click **Print Customer Receipt** to trigger the browser's printer dialog. The print configuration isolates the receipt card and hides the rest of the web application.
+
+### Part 2: Invoice History Recall
+1. Click the **History Folder Icon** (🗄️) in the top header.
+2. Type a customer name, phone number, or bill ID (e.g., `#VVCE-1002`) in the live search bar.
+3. Click a transaction card to slide back the drawer and recall the historical receipt instantly.
+
+### Part 3: Owner Dashboard (Administrative View)
+1. Click **Owner Dashboard** in the top navigation header.
+2. **Switching Outlets**:
+   - The left sidebar displays your managed restaurants list. Click **VVCE Elite Bistro** or any other restaurant card.
+   - Notice the header brand name and default configurations (discounts, GST taxes) dynamically update.
+3. **Creating a New Outlet**:
+   - Click **Add New Hotel** at the bottom of the sidebar.
+   - Enter details (Name, Address, UPI ID, default taxes) and click **Create Hotel**. The active terminal switches to the new outlet instantly.
+4. **Personnel Salary Management**:
+   - Look at the **Employee Salaries Ledger** table.
+   - Toggle status buttons: Click **Mark Paid** or **Mark Due** to toggle salary states. Glow badges indicate status.
+   - Review salary summaries: Paid count, Due count, and outstanding Due Wage Liability.
+   - Click **Add Employee** to register new staff members under the active outlet.
+5. **Profit & Loss Analytics**:
+   - Review KPIs: **Gross Revenue** (sales), **Total Expenses** (accrued paid wages + misc logs), and **Net Profit/Loss** (color-coded to glow green for profit, red for loss).
+   - View the **SVG double bar chart** comparing incoming revenue against outgoing expenses.
+   - Log other costs: Enter utility bills, rent, or ingredient costs in **Log Miscellaneous Expenses** (e.g., "Electricity Bill", `₹4,500`) and click **Add Expense** to update your P&L sheet instantly.
