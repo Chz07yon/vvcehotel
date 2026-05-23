@@ -7,10 +7,10 @@
   <title>VVCE Restaurant - Premium Billing Terminal</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Share+Tech+Mono&display=swap"
-      rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -31,11 +31,17 @@
       </div>
       <nav class="header-nav no-print" id="header-nav">
         <button type="button" class="nav-tab active" id="tab-terminal-btn">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path
+              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z" />
+          </svg>
           Terminal Console
         </button>
         <button type="button" class="nav-tab" id="tab-owner-btn">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+          </svg>
           Owner Dashboard
         </button>
       </nav>
@@ -119,363 +125,364 @@
       <!-- Main Content Container -->
       <div class="container">
 
-      <!-- Billing Console Form Panel -->
-      <div class="form-panel no-print">
-        <div class="panel-header">
-          <h2 class="panel-title">Billing Console</h2>
-          <p class="panel-subtitle">Create and manage guest orders</p>
+        <!-- Billing Console Form Panel -->
+        <div class="form-panel no-print">
+          <div class="panel-header">
+            <h2 class="panel-title">Billing Console</h2>
+            <p class="panel-subtitle">Create and manage guest orders</p>
+          </div>
+
+          <form id="billing-form" novalidate>
+
+            <!-- Customer & Order Information Section -->
+            <div class="section-card">
+              <h3 class="section-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+                Customer & Order Details
+              </h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="customer-name">Customer Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="customer-name" required placeholder="Jane Doe">
+                    <span class="input-focus-ring"></span>
+                  </div>
+                  <span class="error" id="name-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone-number">Phone Number</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="phone-number" required placeholder="10-digit mobile number" maxlength="10"
+                      pattern="\d{10}">
+                    <span class="input-focus-ring"></span>
+                  </div>
+                  <span class="error" id="phone-error"></span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="order-type">Order Type</label>
+                  <div class="input-wrapper">
+                    <select id="order-type">
+                      <option value="Dine-In">Dine-In</option>
+                      <option value="Takeaway">Takeaway</option>
+                      <option value="Delivery">Delivery</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" id="table-group">
+                  <label for="table-num">Table Number</label>
+                  <div class="input-wrapper">
+                    <select id="table-num">
+                      <option value="1">Table 1</option>
+                      <option value="2">Table 2</option>
+                      <option value="3">Table 3</option>
+                      <option value="4">Table 4</option>
+                      <option value="5">Table 5</option>
+                      <option value="6">Table 6</option>
+                      <option value="7">Table 7</option>
+                      <option value="8">Table 8</option>
+                      <option value="9">Table 9</option>
+                      <option value="10">Table 10</option>
+                      <option value="11">Table 11</option>
+                      <option value="12">Table 12</option>
+                      <option value="13">Table 13</option>
+                      <option value="14">Table 14</option>
+                      <option value="15">Table 15</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" id="delivery-group" style="display: none;">
+                  <label for="delivery-app">Delivery Platform</label>
+                  <div class="input-wrapper">
+                    <select id="delivery-app">
+                      <option value="Zomato">Zomato</option>
+                      <option value="Swiggy">Swiggy</option>
+                      <option value="Zepto">Zepto</option>
+                      <option value="bigbasket">bigbasket</option>
+                      <option value="Dominoz">Dominoz</option>
+                      <option value="Pizza Hut">Pizza Hut</option>
+                      <option value="Eat sure">Eat sure</option>
+                      <option value="Blinkit">Blinkit</option>
+                      <option value="Switch">Switch</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="payment-method">Payment Method</label>
+                  <div class="input-wrapper">
+                    <select id="payment-method">
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="UPI">UPI (QR Code)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick-Add Popular Menu Section (Categorized & Searchable) -->
+            <div class="section-card">
+              <div class="section-header vertical-tablet">
+                <h3 class="section-title">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path
+                      d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
+                  </svg>
+                  Menu Inventory
+                </h3>
+                <div class="menu-search-wrapper">
+                  <input type="text" id="menu-search" placeholder="🔍 Search food items...">
+                </div>
+              </div>
+
+              <div class="category-tabs">
+                <button type="button" class="category-tab active" data-category="all">All</button>
+                <button type="button" class="category-tab" data-category="breakfast">Breakfast</button>
+                <button type="button" class="category-tab" data-category="starters">Starters</button>
+                <button type="button" class="category-tab" data-category="mains">Mains</button>
+                <button type="button" class="category-tab" data-category="beverages">Beverages</button>
+              </div>
+
+              <div class="quick-menu-container" id="quick-menu-container">
+                <!-- Dynamically populated from JS array -->
+              </div>
+            </div>
+
+            <!-- Items Details Builder Section -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path
+                      d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                  </svg>
+                  Order Items
+                </h3>
+                <div class="generator-controls">
+                  <label for="num-items">Quick-add rows:</label>
+                  <div class="input-with-button">
+                    <input type="number" id="num-items" min="1" max="20" placeholder="Qty">
+                    <button type="button" id="btn-generate-fields" class="btn-secondary">Add Rows</button>
+                  </div>
+                </div>
+              </div>
+              <span class="error" id="items-error"></span>
+
+              <!-- Dynamic Table Wrapper -->
+              <div id="dynamic-fields-container">
+                <table class="items-table">
+                  <thead>
+                    <tr>
+                      <th>Food Name</th>
+                      <th>Price (₹)</th>
+                      <th>Qty</th>
+                      <th>Total (₹)</th>
+                      <th style="width: 48px; text-align: center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="items-tbody">
+                    <!-- JS builds items here dynamically -->
+                  </tbody>
+                </table>
+                <div class="table-actions">
+                  <button type="button" id="btn-add-item-row" class="btn-text">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                    </svg>
+                    Add Custom Item Line
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="submit" id="btn-generate-bill" class="btn-primary" disabled>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Compile & Generate Bill
+              </button>
+              <button type="button" id="btn-reset" class="btn-outline">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path
+                    d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                </svg>
+                Clear Order
+              </button>
+            </div>
+          </form>
         </div>
 
-        <form id="billing-form" novalidate>
-
-          <!-- Customer & Order Information Section -->
-          <div class="section-card">
-            <h3 class="section-title">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path
-                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-              </svg>
-              Customer & Order Details
-            </h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="customer-name">Customer Name</label>
-                <div class="input-wrapper">
-                  <input type="text" id="customer-name" required placeholder="Jane Doe">
-                  <span class="input-focus-ring"></span>
+        <!-- Live Receipt Panel -->
+        <div class="bill-panel hidden" id="bill-panel">
+          <div class="receipt-card-wrapper">
+            <div class="receipt-card" id="receipt-card">
+              <!-- Thermal Receipt Header -->
+              <div class="receipt-header">
+                <div class="receipt-crest">
+                  <svg viewBox="0 0 24 24" width="42" height="42" fill="currentColor">
+                    <path
+                      d="M12 2L2 22h20L12 2zm0 3.99L18.8 18H5.2L12 5.99zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                  </svg>
                 </div>
-                <span class="error" id="name-error"></span>
+                <div class="receipt-title" id="rcpt-hotel-name">VVCE Restaurant</div>
+                <div class="receipt-tagline" id="rcpt-hotel-tagline">Vidyavardhaka College of Engineering Campus</div>
+                <div class="receipt-address" id="rcpt-hotel-address">Gokulam 3rd Stage, Mysuru, Karnataka 570002</div>
+                <div class="receipt-contact" id="rcpt-hotel-contact">Ph: 0821-4276200 | info@vvce.ac.in</div>
               </div>
 
-              <div class="form-group">
-                <label for="phone-number">Phone Number</label>
-                <div class="input-wrapper">
-                  <input type="text" id="phone-number" required placeholder="10-digit mobile number" maxlength="10"
-                    pattern="\d{10}">
-                  <span class="input-focus-ring"></span>
+              <div class="divider-dotted"></div>
+
+              <!-- Receipt Info -->
+              <div class="receipt-meta-grid">
+                <div><strong>Terminal:</strong> POS-01</div>
+                <div style="text-align: right;"><strong>Invoice:</strong> <span id="rcpt-invoice-num">#VVCE-1001</span>
                 </div>
-                <span class="error" id="phone-error"></span>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="order-type">Order Type</label>
-                <div class="input-wrapper">
-                  <select id="order-type">
-                    <option value="Dine-In">Dine-In</option>
-                    <option value="Takeaway">Takeaway</option>
-                    <option value="Delivery">Delivery</option>
-                  </select>
-                </div>
+                <div><strong>Date:</strong> <span id="rcpt-date-text">22/05/2026</span></div>
+                <div style="text-align: right;"><strong>Time:</strong> <span id="rcpt-time-text">09:30 AM</span></div>
+                <div><strong>Order Type:</strong> <span id="rcpt-order-type">Dine-In</span></div>
+                <div style="text-align: right;" id="rcpt-table-row"><strong>Table:</strong> <span
+                    id="rcpt-table-num">Table 3</span></div>
+                <div style="text-align: right; display: none;" id="rcpt-delivery-row"><strong>Platform:</strong> <span
+                    id="rcpt-delivery-app">Zomato</span></div>
               </div>
 
-              <div class="form-group" id="table-group">
-                <label for="table-num">Table Number</label>
-                <div class="input-wrapper">
-                  <select id="table-num">
-                    <option value="1">Table 1</option>
-                    <option value="2">Table 2</option>
-                    <option value="3">Table 3</option>
-                    <option value="4">Table 4</option>
-                    <option value="5">Table 5</option>
-                    <option value="6">Table 6</option>
-                    <option value="7">Table 7</option>
-                    <option value="8">Table 8</option>
-                    <option value="9">Table 9</option>
-                    <option value="10">Table 10</option>
-                    <option value="11">Table 11</option>
-                    <option value="12">Table 12</option>
-                    <option value="13">Table 13</option>
-                    <option value="14">Table 14</option>
-                    <option value="15">Table 15</option>
-                  </select>
-                </div>
-              </div>
+              <div class="divider-dotted"></div>
 
-              <div class="form-group" id="delivery-group" style="display: none;">
-                <label for="delivery-app">Delivery Platform</label>
-                <div class="input-wrapper">
-                  <select id="delivery-app">
-                    <option value="Zomato">Zomato</option>
-                    <option value="Swiggy">Swiggy</option>
-                    <option value="Zepto">Zepto</option>
-                    <option value="bigbasket">bigbasket</option>
-                    <option value="Dominoz">Dominoz</option>
-                    <option value="Pizza Hut">Pizza Hut</option>
-                    <option value="Eat sure">Eat sure</option>
-                    <option value="Blinkit">Blinkit</option>
-                    <option value="Switch">Switch</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="payment-method">Payment Method</label>
-                <div class="input-wrapper">
-                  <select id="payment-method">
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
-                    <option value="UPI">UPI (QR Code)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick-Add Popular Menu Section (Categorized & Searchable) -->
-          <div class="section-card">
-            <div class="section-header vertical-tablet">
-              <h3 class="section-title">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path
-                    d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
-                </svg>
-                Menu Inventory
-              </h3>
-              <div class="menu-search-wrapper">
-                <input type="text" id="menu-search" placeholder="🔍 Search food items...">
-              </div>
-            </div>
-
-            <div class="category-tabs">
-              <button type="button" class="category-tab active" data-category="all">All</button>
-              <button type="button" class="category-tab" data-category="breakfast">Breakfast</button>
-              <button type="button" class="category-tab" data-category="starters">Starters</button>
-              <button type="button" class="category-tab" data-category="mains">Mains</button>
-              <button type="button" class="category-tab" data-category="beverages">Beverages</button>
-            </div>
-
-            <div class="quick-menu-container" id="quick-menu-container">
-              <!-- Dynamically populated from JS array -->
-            </div>
-          </div>
-
-          <!-- Items Details Builder Section -->
-          <div class="section-card">
-            <div class="section-header">
-              <h3 class="section-title">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                  <path
-                    d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
-                </svg>
-                Order Items
-              </h3>
-              <div class="generator-controls">
-                <label for="num-items">Quick-add rows:</label>
-                <div class="input-with-button">
-                  <input type="number" id="num-items" min="1" max="20" placeholder="Qty">
-                  <button type="button" id="btn-generate-fields" class="btn-secondary">Add Rows</button>
-                </div>
-              </div>
-            </div>
-            <span class="error" id="items-error"></span>
-
-            <!-- Dynamic Table Wrapper -->
-            <div id="dynamic-fields-container">
-              <table class="items-table">
+              <!-- Receipt Items Table -->
+              <table class="receipt-items-table">
                 <thead>
                   <tr>
-                    <th>Food Name</th>
-                    <th>Price (₹)</th>
-                    <th>Qty</th>
-                    <th>Total (₹)</th>
-                    <th style="width: 48px; text-align: center;">Action</th>
+                    <th style="width: 50%;">ITEM NAME</th>
+                    <th style="width: 15%; text-align: right;">PRICE</th>
+                    <th style="width: 15%; text-align: right;">QTY</th>
+                    <th style="width: 20%; text-align: right;">TOTAL</th>
                   </tr>
                 </thead>
-                <tbody id="items-tbody">
-                  <!-- JS builds items here dynamically -->
+                <tbody id="receipt-items">
+                  <!-- Items populated by JS -->
                 </tbody>
               </table>
-              <div class="table-actions">
-                <button type="button" id="btn-add-item-row" class="btn-text">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                  </svg>
-                  Add Custom Item Line
-                </button>
+
+              <div class="divider-double"></div>
+
+              <!-- Receipt Calculations -->
+              <div class="receipt-summary-grid">
+                <div class="summary-row">
+                  <span>SUBTOTAL:</span>
+                  <span id="rcpt-total-cost">₹0.00</span>
+                </div>
+                <div class="summary-row font-italic">
+                  <span><span id="rcpt-discount-lbl">20</span>% Discount Base:</span>
+                  <span id="rcpt-discount">₹0.00</span>
+                </div>
+                <div class="summary-row">
+                  <span>GST (<span id="rcpt-gst-lbl">5</span>%):</span>
+                  <span id="rcpt-gst">₹0.00</span>
+                </div>
+                <div class="summary-row sub-tax">
+                  <span>&nbsp;&nbsp;CGST (<span id="rcpt-cgst-lbl">2.5</span>%):</span>
+                  <span id="rcpt-cgst">₹0.00</span>
+                </div>
+                <div class="summary-row sub-tax">
+                  <span>&nbsp;&nbsp;SGST (<span id="rcpt-sgst-lbl">2.5</span>%):</span>
+                  <span id="rcpt-sgst">₹0.00</span>
+                </div>
+                <div class="summary-row">
+                  <span>GAS CHARGE (<span id="rcpt-gas-lbl">5</span>%):</span>
+                  <span id="rcpt-gas">₹0.00</span>
+                </div>
+
+                <div class="divider-single"></div>
+
+                <div class="summary-row bold-total">
+                  <span>GRAND TOTAL:</span>
+                  <span id="rcpt-final-bill">₹0.00</span>
+                </div>
+
+                <div class="divider-single"></div>
+              </div>
+
+              <!-- Customer Details Block -->
+              <div class="receipt-customer-details">
+                <div class="customer-details-title">CUSTOMER DETAILS</div>
+                <div class="customer-details-row"><span>Name:</span> <span id="rcpt-cname" class="bold-value">Jane
+                    Doe</span></div>
+                <div class="customer-details-row"><span>Phone:</span> <span id="rcpt-cphone"
+                    class="bold-value">9876543210</span></div>
+                <div class="customer-details-row"><span>Paid Via:</span> <span id="rcpt-pay-method"
+                    class="bold-value">Cash</span></div>
+              </div>
+
+              <div class="divider-dotted"></div>
+
+              <!-- Savings Badge & Thank you -->
+              <div class="receipt-footer">
+                <div class="savings-container">
+                  <span class="savings-label">NET SAVINGS TODAY</span>
+                  <span class="savings-amount" id="rcpt-saved">₹0.00</span>
+                </div>
+
+                <!-- UPI QR Code Block -->
+                <div class="receipt-qr-wrapper hidden" id="receipt-qr-wrapper">
+                  <div class="receipt-qr-title">SCAN TO PAY (UPI)</div>
+                  <img class="receipt-qr-img" id="receipt-qr-img" src="" alt="Payment QR Code">
+                  <div class="receipt-qr-upi" id="receipt-qr-upi-id">vvcehotel@upi</div>
+                  <div class="divider-dotted"></div>
+                </div>
+
+                <div class="visit-again-msg">
+                  THANK YOU FOR YOUR VISIT, <span id="rcpt-cname-footer">JANE DOE</span>!
+                </div>
+                <div class="barcode-wrapper">
+                  <div class="barcode-lines"></div>
+                  <div class="barcode-value" id="rcpt-barcode-val">VVCE-POS-51AB9712</div>
+                </div>
+                <div class="receipt-version">Software: Antigravity v3.5-POS</div>
               </div>
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="form-actions">
-            <button type="submit" id="btn-generate-bill" class="btn-primary" disabled>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-              </svg>
-              Compile & Generate Bill
-            </button>
-            <button type="button" id="btn-reset" class="btn-outline">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <!-- Print Trigger -->
+          <div class="bill-actions no-print">
+            <button type="button" id="btn-print" class="btn-primary btn-large">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                 <path
-                  d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                  d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
               </svg>
-              Clear Order
+              Print Customer Receipt
             </button>
           </div>
-        </form>
-      </div>
-
-      <!-- Live Receipt Panel -->
-      <div class="bill-panel hidden" id="bill-panel">
-        <div class="receipt-card-wrapper">
-          <div class="receipt-card" id="receipt-card">
-            <!-- Thermal Receipt Header -->
-            <div class="receipt-header">
-              <div class="receipt-crest">
-                <svg viewBox="0 0 24 24" width="42" height="42" fill="currentColor">
-                  <path
-                    d="M12 2L2 22h20L12 2zm0 3.99L18.8 18H5.2L12 5.99zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                </svg>
-              </div>
-              <div class="receipt-title" id="rcpt-hotel-name">VVCE Restaurant</div>
-              <div class="receipt-tagline" id="rcpt-hotel-tagline">Vidyavardhaka College of Engineering Campus</div>
-              <div class="receipt-address" id="rcpt-hotel-address">Gokulam 3rd Stage, Mysuru, Karnataka 570002</div>
-              <div class="receipt-contact" id="rcpt-hotel-contact">Ph: 0821-4276200 | info@vvce.ac.in</div>
-            </div>
-
-            <div class="divider-dotted"></div>
-
-            <!-- Receipt Info -->
-            <div class="receipt-meta-grid">
-              <div><strong>Terminal:</strong> POS-01</div>
-              <div style="text-align: right;"><strong>Invoice:</strong> <span id="rcpt-invoice-num">#VVCE-1001</span>
-              </div>
-              <div><strong>Date:</strong> <span id="rcpt-date-text">22/05/2026</span></div>
-              <div style="text-align: right;"><strong>Time:</strong> <span id="rcpt-time-text">09:30 AM</span></div>
-              <div><strong>Order Type:</strong> <span id="rcpt-order-type">Dine-In</span></div>
-              <div style="text-align: right;" id="rcpt-table-row"><strong>Table:</strong> <span
-                  id="rcpt-table-num">Table 3</span></div>
-              <div style="text-align: right; display: none;" id="rcpt-delivery-row"><strong>Platform:</strong> <span
-                  id="rcpt-delivery-app">Zomato</span></div>
-            </div>
-
-            <div class="divider-dotted"></div>
-
-            <!-- Receipt Items Table -->
-            <table class="receipt-items-table">
-              <thead>
-                <tr>
-                  <th style="width: 50%;">ITEM NAME</th>
-                  <th style="width: 15%; text-align: right;">PRICE</th>
-                  <th style="width: 15%; text-align: right;">QTY</th>
-                  <th style="width: 20%; text-align: right;">TOTAL</th>
-                </tr>
-              </thead>
-              <tbody id="receipt-items">
-                <!-- Items populated by JS -->
-              </tbody>
-            </table>
-
-            <div class="divider-double"></div>
-
-            <!-- Receipt Calculations -->
-            <div class="receipt-summary-grid">
-              <div class="summary-row">
-                <span>SUBTOTAL:</span>
-                <span id="rcpt-total-cost">₹0.00</span>
-              </div>
-              <div class="summary-row font-italic">
-                <span><span id="rcpt-discount-lbl">20</span>% Discount Base:</span>
-                <span id="rcpt-discount">₹0.00</span>
-              </div>
-              <div class="summary-row">
-                <span>GST (<span id="rcpt-gst-lbl">5</span>%):</span>
-                <span id="rcpt-gst">₹0.00</span>
-              </div>
-              <div class="summary-row sub-tax">
-                <span>&nbsp;&nbsp;CGST (<span id="rcpt-cgst-lbl">2.5</span>%):</span>
-                <span id="rcpt-cgst">₹0.00</span>
-              </div>
-              <div class="summary-row sub-tax">
-                <span>&nbsp;&nbsp;SGST (<span id="rcpt-sgst-lbl">2.5</span>%):</span>
-                <span id="rcpt-sgst">₹0.00</span>
-              </div>
-              <div class="summary-row">
-                <span>GAS CHARGE (<span id="rcpt-gas-lbl">5</span>%):</span>
-                <span id="rcpt-gas">₹0.00</span>
-              </div>
-
-              <div class="divider-single"></div>
-
-              <div class="summary-row bold-total">
-                <span>GRAND TOTAL:</span>
-                <span id="rcpt-final-bill">₹0.00</span>
-              </div>
-
-              <div class="divider-single"></div>
-            </div>
-
-            <!-- Customer Details Block -->
-            <div class="receipt-customer-details">
-              <div class="customer-details-title">CUSTOMER DETAILS</div>
-              <div class="customer-details-row"><span>Name:</span> <span id="rcpt-cname" class="bold-value">Jane
-                  Doe</span></div>
-              <div class="customer-details-row"><span>Phone:</span> <span id="rcpt-cphone"
-                  class="bold-value">9876543210</span></div>
-              <div class="customer-details-row"><span>Paid Via:</span> <span id="rcpt-pay-method"
-                  class="bold-value">Cash</span></div>
-            </div>
-
-            <div class="divider-dotted"></div>
-
-            <!-- Savings Badge & Thank you -->
-            <div class="receipt-footer">
-              <div class="savings-container">
-                <span class="savings-label">NET SAVINGS TODAY</span>
-                <span class="savings-amount" id="rcpt-saved">₹0.00</span>
-              </div>
-
-              <!-- UPI QR Code Block -->
-              <div class="receipt-qr-wrapper hidden" id="receipt-qr-wrapper">
-                <div class="receipt-qr-title">SCAN TO PAY (UPI)</div>
-                <img class="receipt-qr-img" id="receipt-qr-img" src="" alt="Payment QR Code">
-                <div class="receipt-qr-upi" id="receipt-qr-upi-id">vvcehotel@upi</div>
-                <div class="divider-dotted"></div>
-              </div>
-
-              <div class="visit-again-msg">
-                THANK YOU FOR YOUR VISIT, <span id="rcpt-cname-footer">JANE DOE</span>!
-              </div>
-              <div class="barcode-wrapper">
-                <div class="barcode-lines"></div>
-                <div class="barcode-value" id="rcpt-barcode-val">VVCE-POS-51AB9712</div>
-              </div>
-              <div class="receipt-version">Software: Antigravity v3.5-POS</div>
-            </div>
-          </div>
         </div>
 
-        <!-- Print Trigger -->
-        <div class="bill-actions no-print">
-          <button type="button" id="btn-print" class="btn-primary btn-large">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-              <path
-                d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
-            </svg>
-            Print Customer Receipt
-          </button>
-        </div>
-      </div>
-
-    </div> <!-- /container -->
+      </div> <!-- /container -->
     </div> <!-- /terminal-view -->
 
     <!-- Owner Dashboard View -->
     <div id="owner-view" class="view-content hidden no-print">
       <div class="owner-dashboard-grid">
-        
+
         <!-- Left Sidebar: Owner Profile & Hotel Switcher -->
         <aside class="owner-sidebar">
           <!-- Profile Card -->
           <div class="owner-card profile-card">
             <div class="profile-avatar">
               <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
               </svg>
             </div>
             <div class="profile-info">
@@ -497,8 +504,11 @@
             <div class="hotels-list" id="owner-hotels-list">
               <!-- Dynamically populated -->
             </div>
-            <button type="button" class="btn-primary btn-small" id="btn-show-add-hotel" style="margin-top: 1rem; width: 100%;">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            <button type="button" class="btn-primary btn-small" id="btn-show-add-hotel"
+              style="margin-top: 1rem; width: 100%;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+              </svg>
               Add New Hotel
             </button>
           </div>
@@ -506,18 +516,21 @@
 
         <!-- Right Content Area: Salaries & Financial Analytics -->
         <main class="owner-main-content">
-          
+
           <!-- Unified Salaries & P&L Dashboard Container -->
           <div class="dashboard-unified-tab">
             <div class="tab-header-title">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path
+                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+              </svg>
               Hotel Control Center: <span id="dashboard-active-hotel-name">VVCE Restaurant</span>
             </div>
 
             <!-- Financial Analytics Section -->
             <div class="owner-sub-card finance-section">
               <h3 class="sub-card-title">📈 Financial Analytics & P&L</h3>
-              
+
               <div class="finance-grid">
                 <!-- KPI metrics cards -->
                 <div class="kpi-card revenue-kpi">
@@ -568,7 +581,8 @@
                     <div class="form-group inline-group" style="flex: 1;">
                       <input type="number" id="expense-amount" placeholder="Amount (₹)" min="1" step="1" required>
                     </div>
-                    <button type="submit" class="btn-primary btn-small" style="width: auto; height: 42px;">Add Expense</button>
+                    <button type="submit" class="btn-primary btn-small" style="width: auto; height: 42px;">Add
+                      Expense</button>
                   </div>
                 </form>
                 <div class="expenses-ledger-container">
@@ -591,15 +605,18 @@
             <!-- Employee Salaries Section -->
             <div class="owner-sub-card salaries-section">
               <h3 class="sub-card-title">💼 Employee Salaries Ledger</h3>
-              
+
               <div class="salaries-controls">
                 <div class="ledger-summary">
                   <span class="summary-stat">Paid: <strong id="salaries-paid-count">0</strong></span>
                   <span class="summary-stat">Due: <strong id="salaries-due-count">0</strong></span>
-                  <span class="summary-stat">Due Liability: <strong id="salaries-due-liability" class="text-error">₹0.00</strong></span>
+                  <span class="summary-stat">Due Liability: <strong id="salaries-due-liability"
+                      class="text-error">₹0.00</strong></span>
                 </div>
                 <button type="button" class="btn-primary btn-small" id="btn-show-add-employee" style="width: auto;">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  </svg>
                   Add Employee
                 </button>
               </div>
