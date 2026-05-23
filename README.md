@@ -67,10 +67,51 @@ This client-side web application operates as a standalone desktop/tablet-optimiz
 
 ## 📂 File Architecture
 
+* **[C_Base.c](file:///c:/Extacuricular/Antigravity/CABA/C_Base.c):** The original command-line terminal/console prototype written in C. It serves as the baseline logic for the hotel billing system.
 * **[index.html](file:///c:/Extacuricular/Antigravity/CABA/index.html):** Declares layout grids, dashboard panels, settings modal, history drawer, and the receipt layout.
 * **[style.css](file:///c:/Extacuricular/Antigravity/CABA/style.css):** Contains style system tokens, UI element rules, hover states, animations, and `@media print` configuration.
 * **[script.js](file:///c:/Extacuricular/Antigravity/CABA/script.js):** Contains POS state, menu arrays, helper functions, and event listeners.
 * **`Screenshot_20260522_094545_Gallery.jpg`:** Local image file loaded when UPI QR Code payment method is selected.
+
+---
+
+## 📟 Legacy Console Prototype (`C_Base.c`)
+
+The [C_Base.c](file:///c:/Extacuricular/Antigravity/CABA/C_Base.c) file is the initial command-line (CLI) prototype of the billing console. It outlines the core mathematical logic and data structures that were later adapted and expanded into this modern web-based POS application.
+
+### Key Logic & Features in `C_Base.c`:
+1. **Data Model ([hotel](file:///c:/Extacuricular/Antigravity/CABA/C_Base.c#L3-L6) struct):**
+   * Uses a custom C structure to store itemized order records:
+     ```c
+     struct hotel {
+       int p, price, quantity, total;
+       char fname[20];
+     };
+     ```
+2. **Customer Data Collection:**
+   * Prompts the cashier to enter the customer's name and stores it in `cname`.
+   * Prompts for a 10-digit phone number, reading each digit individually into an integer array `a[i]` via a loop running from index `0` to `9`.
+3. **Interactive Order Intake:**
+   * Prompts the user for the number of food items (`nf`).
+   * Iterates through a loop `nf` times to gather details for each item (Food Name, Unit Price, and Quantity).
+   * Automatically calculates each line item's subtotal: `total = price * quantity`.
+4. **Calculations & Billing Rules:**
+   * **Base Amount (`ba`):** Sums the subtotals of all individual items.
+   * **Discount (`dis`):** Calculates a fixed 20% discount on the base amount (`ba * 0.2`).
+   * **Discounted Total (`dis1`):** The remaining balance after subtracting the discount (`ba - dis`).
+   * **Tax Calculations:**
+     * **GST:** 5% of the base amount (`ba * 0.05`).
+     * **CGST:** 2.5% of the base amount (`ba * 0.025`).
+     * **SGST:** 2.5% of the base amount (`ba * 0.025`).
+   * **Gas Charge:** 5% of the base amount (`ba * 0.05`).
+   * **Total Bill Amount:** Computed as `dis1 + gst + cgst + sgst + gas` (equivalent to 95% of the original base amount due to the 20% discount and 15% cumulative taxes/charges).
+5. **Formatted Console Printout:**
+   * Generates a textual receipt layout in the CLI complete with:
+     * Header decorations: `******VVCE HOTEL******`
+     * Tabular itemized columns: `FOOD NAME`, `PRICE`, `QUANTITY`, `TOTAL`
+     * Cost breakups: Total Cost, 20% Discounted price, GST/CGST/SGST, and Gas Charges
+     * Customer details (Name, Phone number printed sequentially)
+     * Final savings note ("YOU HAVE SAVED : [savings]")
 
 ---
 
