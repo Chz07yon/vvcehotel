@@ -1353,31 +1353,157 @@ button {
   .dashboard-header {
     flex-direction: column;
     gap: 1rem;
-    align-items: flex-start;
-    padding: 1rem;
+    align-items: center !important;
+    text-align: center;
+    padding: 1.25rem 1rem;
   }
+  
+  .header-brand {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .header-nav {
+    width: 100%;
+    margin: 0.5rem 0;
+    justify-content: stretch;
+    border-radius: 8px;
+  }
+  
+  .nav-tab {
+    flex: 1;
+    justify-content: center;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
   .header-meta {
     width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center !important;
+    gap: 0.75rem;
   }
+  
+  .time-widget {
+    text-align: center !important;
+  }
+  
   .analytics-body {
     grid-template-columns: 1fr;
   }
+  
   .form-row {
     flex-direction: column;
     gap: 0;
   }
+  
   .quick-menu-container {
     grid-template-columns: repeat(2, 1fr);
   }
+  
   .vertical-tablet {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
+  
   .menu-search-wrapper {
     max-width: 100%;
+  }
+
+  /* Receipt styling on small screens */
+  .receipt-card {
+    padding: 1rem;
+    font-size: 13px;
+  }
+
+  /* Modals padding on mobile */
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Stack table rows as card blocks on mobile */
+  .salaries-table, 
+  .salaries-table thead, 
+  .salaries-table tbody, 
+  .salaries-table th, 
+  .salaries-table td, 
+  .salaries-table tr,
+  .items-table,
+  .items-table thead,
+  .items-table tbody,
+  .items-table th,
+  .items-table td,
+  .items-table tr {
+    display: block;
+  }
+  
+  .salaries-table thead,
+  .items-table thead {
+    display: none;
+  }
+  
+  /* Employee table card row */
+  .salaries-table tr {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    padding: 0.85rem;
+  }
+  
+  .salaries-table td {
+    border: none;
+    padding: 0.35rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  
+  .salaries-table td:first-child::before { content: "Name"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .salaries-table td:nth-child(2)::before { content: "Role"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .salaries-table td:nth-child(3)::before { content: "Salary"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .salaries-table td:nth-child(4)::before { content: "Status"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .salaries-table td:nth-child(5)::before { content: "Action"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+
+  /* Cashier items table card row */
+  .items-table tr {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .items-table td {
+    border: none;
+    padding: 0.35rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .items-table td:first-child::before { content: "Item"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .items-table td:nth-child(2)::before { content: "Price"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .items-table td:nth-child(3)::before { content: "Qty"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .items-table td:nth-child(4)::before { content: "Total"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  .items-table td:nth-child(5)::before { content: "Remove"; font-weight: 700; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+  
+  .items-table input.item-name, 
+  .items-table input.item-price, 
+  .items-table input.item-qty {
+    text-align: right;
+    width: 140px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: var(--bg-input) !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 4px !important;
   }
 }
 
